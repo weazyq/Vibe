@@ -17,9 +17,9 @@ namespace Vibe.Backoffice.Controllers
         }
 
         [HttpGet("/Test")]
-        public User[] GetClients()
+        public UserEntity[] GetClients()
         {
-            User user = new User
+            UserEntity user = new UserEntity
             {
                 Id = Guid.NewGuid(),
                 Login = "weazy",

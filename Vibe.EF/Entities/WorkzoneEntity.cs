@@ -2,7 +2,7 @@
 
 namespace Vibe.EF.Entities
 {
-    public class Workzone : BaseEntity
+    public class WorkzoneEntity : BaseEntity
     {
         [Column(TypeName = "id")]
         public Guid Id { get; set; }

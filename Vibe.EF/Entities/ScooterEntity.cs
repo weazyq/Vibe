@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Vibe.EF.Entities
 {
-    public class Scooter
+    public class ScooterEntity
     {
         [Column("id")]
         public Guid Id { get; set; }
