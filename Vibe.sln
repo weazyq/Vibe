@@ -13,9 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vibe.Services", "Vibe.Servi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vibe.Domain", "Vibe.Domain\Vibe.Domain.csproj", "{BF02C1DB-4481-40AC-9982-65578A2CB469}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vibe.BackOffice.Server", "Vibe.BackOffice\Vibe.BackOffice.Server\Vibe.BackOffice.Server.csproj", "{DF21D8D2-6AFE-4546-9348-585E155C5D7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vibe.BackOffice.Server", "Vibe.BackOffice\Vibe.BackOffice.Server\Vibe.BackOffice.Server.csproj", "{DF21D8D2-6AFE-4546-9348-585E155C5D7A}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "vibe.backoffice.client", "Vibe.BackOffice\vibe.backoffice.client\vibe.backoffice.client.esproj", "{BA65A851-A6C0-4FD9-B567-2103E3C7380C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vibe.Tools", "Vibe.Tools\Vibe.Tools.csproj", "{F5A585A6-3A8B-43A7-849F-412E8430BD95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{BA65A851-A6C0-4FD9-B567-2103E3C7380C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA65A851-A6C0-4FD9-B567-2103E3C7380C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BA65A851-A6C0-4FD9-B567-2103E3C7380C}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{F5A585A6-3A8B-43A7-849F-412E8430BD95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5A585A6-3A8B-43A7-849F-412E8430BD95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5A585A6-3A8B-43A7-849F-412E8430BD95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5A585A6-3A8B-43A7-849F-412E8430BD95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
