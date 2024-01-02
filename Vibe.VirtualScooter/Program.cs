@@ -1,3 +1,5 @@
+using Vibe.VirtualScooter.Modules;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,6 +10,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+Double latitude = Double.Parse(Environment.GetEnvironmentVariable("SCOOTER_LATITUDE")!);
+Double longitude = Double.Parse(Environment.GetEnvironmentVariable("SCOOTER_LONGITUDE")!);
+
+VirtualScooter.Instance.SetCoordinates(latitude, longitude);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
