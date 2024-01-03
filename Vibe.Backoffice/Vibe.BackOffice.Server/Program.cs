@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Vibe.EF;
 using Vibe.Services.Scooters;
 using Vibe.Services.Scooters.Interface;
 using Vibe.Services.Scooters.Repository;
@@ -16,6 +18,8 @@ builder.Services.AddSingleton<IScootersProvider, ScootersProvider>();
 #region Repositories
 builder.Services.AddSingleton<IScootersRepository, ScootersRepository>();
 #endregion
+
+builder.Services.AddDbContext<DataContext>(options => options.UseNpgsql("").UseSnakeCaseNamingConvention());
 
 var app = builder.Build();
 
