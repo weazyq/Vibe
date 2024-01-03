@@ -1,8 +1,21 @@
+using Vibe.Services.Scooters;
+using Vibe.Services.Scooters.Interface;
+using Vibe.Services.Scooters.Repository;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+#region Services
+builder.Services.AddSingleton<IScootersService, ScootersService>();
+builder.Services.AddSingleton<IScootersProvider, ScootersProvider>();
+#endregion
+
+#region Repositories
+builder.Services.AddSingleton<IScootersRepository, ScootersRepository>();
+#endregion
 
 var app = builder.Build();
 
