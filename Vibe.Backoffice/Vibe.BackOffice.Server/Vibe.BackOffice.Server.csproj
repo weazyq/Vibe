@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Vibe.Domain\Vibe.Domain.csproj" />
+    <ProjectReference Include="..\..\Vibe.EF\Vibe.EF.csproj" />
     <ProjectReference Include="..\..\Vibe.Services\Vibe.Services.csproj" />
     <ProjectReference Include="..\vibe.backoffice.client\vibe.backoffice.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
@@ -19,9 +20,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="EntityFrameworkCore.NamingConventions" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy">
       <Version>8.*-*</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
   </ItemGroup>
 
 </Project>
