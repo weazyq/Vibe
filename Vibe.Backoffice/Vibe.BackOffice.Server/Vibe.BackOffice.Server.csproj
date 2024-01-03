@@ -11,6 +11,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Vibe.Domain\Vibe.Domain.csproj" />
+    <ProjectReference Include="..\..\Vibe.Services\Vibe.Services.csproj" />
     <ProjectReference Include="..\vibe.backoffice.client\vibe.backoffice.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
