@@ -1,4 +1,5 @@
-﻿using Vibe.Tools.Result;
+﻿using Vibe.Domain.Scooter;
+using Vibe.Tools.Result;
 
 namespace Vibe.VirtualScooter.Modules
 {

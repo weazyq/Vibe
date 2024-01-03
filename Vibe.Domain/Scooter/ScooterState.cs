@@ -1,4 +1,4 @@
-﻿namespace Vibe.VirtualScooter.Modules
+﻿namespace Vibe.Domain.Scooter
 {
     public enum ScooterState
     {
