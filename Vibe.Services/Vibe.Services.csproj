@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Vibe.Domain\Vibe.Domain.csproj" />
+    <ProjectReference Include="..\Vibe.EF\Vibe.EF.csproj" />
     <ProjectReference Include="..\Vibe.Tools\Vibe.Tools.csproj" />
   </ItemGroup>
 
