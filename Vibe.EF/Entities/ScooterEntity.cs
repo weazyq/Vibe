@@ -2,12 +2,10 @@
 
 namespace Vibe.EF.Entities
 {
-    public class ScooterEntity : Auditable, IHaveId, IRemovable
+    public class ScooterEntity : Auditable, IHaveId
     {
         public Guid Id { get; set; }
-        public String Name { get; set; }
-        public String Ip { get; set; }
-        public String Port { get; set; }
-        public Boolean IsRemoved { get; set; }
+        public String Url { get; set; }
+        public String SerialNumber { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using Vibe.EF;
 using Vibe.EF.Entities;
 using Vibe.Services.Scooters.Converters;
 using Vibe.Services.Scooters.Interface;
+using Vibe.Tools.Result;
 
 namespace Vibe.Services.Scooters
 {
@@ -30,9 +31,9 @@ namespace Vibe.Services.Scooters
             return _scooterRepository.List().ToDomain();
         }
 
-        public async Task CheckScooterAvailability(Scooter scooter) 
+        public async Task<Result> CheckScooterAvailability(Scooter scooter) 
         {
-            await _scootersProvider.CheckScooterAvailability(scooter);
+            return await _scootersProvider.CheckScooterAvailability(scooter);
         }
 
         public ScooterView GetScooterView(Guid id)

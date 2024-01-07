@@ -7,7 +7,7 @@ namespace Vibe.Services.Scooters.Converters
     {
         public static Scooter ToDomain(this ScooterEntity scooterEntity)
         {
-            return new Scooter(scooterEntity.Id, scooterEntity.Name, scooterEntity.Ip, scooterEntity.Port);
+            return new Scooter(scooterEntity.Id, scooterEntity.Url, scooterEntity.SerialNumber);
         }
 
         public static Scooter[] ToDomain(this IEnumerable<ScooterEntity> scooterEntities)

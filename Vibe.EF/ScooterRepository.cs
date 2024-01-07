@@ -16,7 +16,6 @@ namespace Vibe.EF
             ScooterEntity? scooter = Get(id);
             if (scooter == null) return;
 
-            scooter.IsRemoved = true;
             Update(scooter);
         }
 

@@ -3,16 +3,14 @@
     public class Scooter
     {
         public Guid Id { get; }
-        public String Name { get; }
-        public String Ip { get; }
-        public String Port { get; }
+        public String Url { get; }
+        public String SerialNumber { get; }
 
-        public Scooter(Guid id, String name, String ip, String port)
+        public Scooter(Guid id, String url, string serialNumber)
         {
             Id = id;
-            Name = name;
-            Ip = ip;
-            Port = port;
+            Url = url;
+            SerialNumber = serialNumber;
         }
     }
 }
