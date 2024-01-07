@@ -3,11 +3,12 @@ using Vibe.Tools.Result;
 
 namespace Vibe.VirtualScooter.Modules
 {
-    public class VirtualScooter
+    public class VirtualScooterData
     {
-        private static VirtualScooter _instance;
+        private static VirtualScooterData _instance;
 
         public Guid ScooterId { get; private set; }
+        public String SerialNumber { get; private set; }
         public Double Latitude { get; private set; }
         public Double Longitude { get; private set; }
 
@@ -15,24 +16,14 @@ namespace Vibe.VirtualScooter.Modules
         public Boolean IsLocked { get; private set; } = true;
         public Battery Battery { get; private set; } = new Battery();
 
-        public static VirtualScooter Instance
+        public static VirtualScooterData Instance
         {
             get
             {
                 if (_instance != null) return _instance;
                     
-                return _instance = new VirtualScooter();
+                return _instance = new VirtualScooterData();
             }
-        }
-
-        public void PrintVirtualScooterInfo()
-        {
-            Console.WriteLine(nameof(ScooterId) + $" {ScooterId}");
-            Console.WriteLine(nameof(Latitude) + $" {Latitude}");
-            Console.WriteLine(nameof(Longitude) + $" {Longitude}");
-            Console.WriteLine(nameof(State) + $" {State}");
-            Console.WriteLine(nameof(IsLocked) + $" {IsLocked}");
-            Console.WriteLine(nameof(Battery) + $" {Battery.Charge}");
         }
 
         public Result CheckScooterAvailability()
@@ -108,6 +99,11 @@ namespace Vibe.VirtualScooter.Modules
         {
             Latitude = x;
             Longitude = y;
+        }
+
+        public void SetSerialNumber(String serialNumber)
+        {
+            SerialNumber = serialNumber;
         }
     }
 }

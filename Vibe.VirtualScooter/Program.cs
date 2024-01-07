@@ -1,4 +1,6 @@
-using Vibe.VirtualScooter.Modules;
+using Vibe.VirtualScooter.Data;
+using Microsoft.EntityFrameworkCore;
+using Vibe.VirtualScooter.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,12 +11,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<DataContext>(options => options
+    .UseNpgsql("Server=localhost;Database=vibe;User Id=postgres;Password=123")
+    .UseLowerCaseNamingConvention()
+);
+
+builder.Services.AddScoped<VirtualScooterService>();
+
 var app = builder.Build();
-
-Double latitude = Double.Parse(Environment.GetEnvironmentVariable("SCOOTER_LATITUDE")!);
-Double longitude = Double.Parse(Environment.GetEnvironmentVariable("SCOOTER_LONGITUDE")!);
-
-VirtualScooter.Instance.SetCoordinates(latitude, longitude);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -26,6 +30,14 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+using (var scope = app.Services.CreateScope())
+{
+    VirtualScooterService? virtualScooterService = scope.ServiceProvider.GetService<VirtualScooterService>();
+    if(virtualScooterService == null) throw new NullReferenceException($"При запуске приложения не удалось получить сервис инициализиации самоката: VirtualScooterService");
+
+    virtualScooterService.Initialize();
+}
 
 app.MapControllers();
 
