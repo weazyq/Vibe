@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Sockets;
+using Vibe.Domain.Scooter;
 using Vibe.VirtualScooter.Data;
 using Vibe.VirtualScooter.Modules;
 
@@ -33,17 +34,10 @@ namespace Vibe.VirtualScooter.Services
             ScooterEntity? entity = _dataContext.Scooters.Select(s => s)
                 .Where(s => s.SerialNumber == serialNumber)
                 .FirstOrDefault();
-            if (entity != null && entity.Url == currentUrl) return;
 
-            if (entity != null && entity.Url != currentUrl)
+            if (entity == null)
             {
-                entity.Url = currentUrl;
-                entity.ModifiedAt = DateTime.UtcNow;
-                _dataContext.Update(entity);
-            }
-            else
-            {
-                ScooterEntity scooter = new()
+                entity = new()
                 {
                     Id = Guid.NewGuid(),
                     Url = currentUrl,
@@ -51,20 +45,18 @@ namespace Vibe.VirtualScooter.Services
                     CreatedAt = DateTime.UtcNow
                 };
 
-                ScooterInfoEntity scooterInfo = new()
-                {
-                    ScooterId = scooter.Id,
-                    Latitude = VirtualScooterData.Instance.Latitude,
-                    Longitude = VirtualScooterData.Instance.Longitude,
-                    Charge = VirtualScooterData.Instance.Battery.Charge,
-                    State = VirtualScooterData.Instance.State,
-                    CreatedAt = DateTime.UtcNow
-                };
-
-                _dataContext.Add(scooter);
-                _dataContext.Add(scooterInfo);
+                _dataContext.Add(entity);
             }
+            else if (entity != null && entity.Url != currentUrl)
+            {
+                entity.Url = currentUrl;
+                entity.ModifiedAt = DateTime.UtcNow;
+                _dataContext.Update(entity);
+            }
+
             _dataContext.SaveChanges();
+
+            VirtualScooterData.Instance.SetScooterId(entity!.Id);
         }
 
         public static (String, String) GetLocalIPv4Address(String? targetIp = null)

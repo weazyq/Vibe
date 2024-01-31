@@ -7,7 +7,7 @@ namespace Vibe.VirtualScooter.Modules
     {
         private static VirtualScooterData _instance;
 
-        public Guid ScooterId { get; private set; }
+        public Guid? ScooterId { get; private set; }
         public String SerialNumber { get; private set; }
         public Double Latitude { get; private set; }
         public Double Longitude { get; private set; }
@@ -104,6 +104,11 @@ namespace Vibe.VirtualScooter.Modules
         public void SetSerialNumber(String serialNumber)
         {
             SerialNumber = serialNumber;
+        }
+
+        public void SetScooterId(Guid id)
+        {
+            ScooterId = id;
         }
     }
 }

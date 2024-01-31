@@ -17,6 +17,7 @@ builder.Services.AddDbContext<DataContext>(options => options
 );
 
 builder.Services.AddScoped<VirtualScooterService>();
+builder.Services.AddSingleton<IHostedService, ScooterScheduler>();
 
 var app = builder.Build();
 
