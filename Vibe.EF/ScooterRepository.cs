@@ -1,4 +1,5 @@
 ﻿using Vibe.EF.Entities;
+using Vibe.EF.Interface;
 
 namespace Vibe.EF
 {

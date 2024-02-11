@@ -12,5 +12,6 @@ namespace Vibe.EF
         public DbSet<EmployeeEntity> Employees { get; set; }
         public DbSet<ScooterEntity> Scooters { get; set; }
         public DbSet<WorkzoneEntity> Workzones { get; set; }
+        public DbSet<PhoneCodeEntity> PhoneCodes { get; set; }
     }
 }

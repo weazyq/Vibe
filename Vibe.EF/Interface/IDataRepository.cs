@@ -1,6 +1,6 @@
-﻿namespace Vibe.EF
+﻿namespace Vibe.EF.Interface
 {
-    public interface IDataRepository <TEntity>
+    public interface IDataRepository<TEntity>
     {
         void Save(TEntity entity);
         IEnumerable<TEntity> List();

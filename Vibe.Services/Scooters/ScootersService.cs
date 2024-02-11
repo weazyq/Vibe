@@ -1,6 +1,6 @@
 ﻿using Vibe.Domain.Scooter;
-using Vibe.EF;
 using Vibe.EF.Entities;
+using Vibe.EF.Interface;
 using Vibe.Services.Scooters.Converters;
 using Vibe.Services.Scooters.Interface;
 using Vibe.Tools.Result;
