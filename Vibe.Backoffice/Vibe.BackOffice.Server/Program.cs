@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Vibe.BackOffice.Server.Tools;
 using Vibe.EF;
@@ -10,6 +9,7 @@ using Vibe.Services.Clients;
 using Vibe.Services.Clients.Interface;
 using Vibe.Services.Scooters;
 using Vibe.Services.Scooters.Interface;
+using Vibe.Tools.JWT;
 
 var builder = WebApplication.CreateBuilder(args);
 
