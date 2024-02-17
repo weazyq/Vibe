@@ -27,6 +27,7 @@ namespace Vibe.Tools.Result
         public static implicit operator T(Result<T> result) => result.Value;
         public static implicit operator Result<T>(T value) => new(value);
         public static implicit operator Result<T>(Result result) => new(result.Errors[0]);
+        public static implicit operator Result(Result<T> result) => new(result.Error);
 
         public static Result<T> Success(T value)
         {

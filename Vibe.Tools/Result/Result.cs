@@ -10,6 +10,11 @@
 
         public Boolean IsFail => Errors.IsNotEmpty();
 
+        public Result(Error? error = null)
+        {
+            if (error != null) AddError(error);
+        }
+
         public void AddError(Error error)
         {
             Errors.Add(error);
