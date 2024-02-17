@@ -1,6 +1,6 @@
 ﻿namespace Vibe.Tools.Result
 {
-    public class Result : IResult
+    public partial class Result : IResult
     {
         private Error[] _errors => new Error[] { };
 
@@ -15,6 +15,11 @@
             Errors.Add(error);
         }
 
+        public void AddErrors(List<Error> errors)
+        {
+            errors.ForEach(AddError);
+        }
+
         public static Result Success = new Result() { };
 
         public static Result Fail(String message) 
@@ -22,6 +27,13 @@
             Result result = new Result();
             result.AddError(new Error(message));
 
+            return result;
+        }
+
+        public static Result Fail(List<Error> errors)
+        {
+            Result result = new Result();
+            result.AddErrors(errors);
             return result;
         }
     }
