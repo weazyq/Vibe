@@ -5,7 +5,8 @@ namespace Vibe.Services.Users.Interface
 {
     public interface IUserService
     {
-        Result<Guid> SaveUserByClient(Guid clientId);
         User? GetUser(Guid userId);
+        Result<Guid> SaveUserByClient(Guid clientId);
+        Result<(String Token, String RefreshToken)> Login(Guid userId);
     }
 }

@@ -37,7 +37,11 @@ namespace Vibe.BackOffice.Server.Controllers
             Result<Guid> saveUserResult = _userService.SaveUserByClient(saveClientResult.Value);
             if (saveUserResult.IsFail) return new Result<String>("", saveClientResult.Error);
 
-            return Result.Success;
+            Result<(String Token, String RefreshToken)> loginResult = _userService.Login(saveUserResult.Value);
+            if (loginResult.IsFail) return new Result<String>("", loginResult.Error);
+
+            Response.Cookies.Append("refreshToken", loginResult.Data.RefreshToken);
+            return loginResult.Data.Token;
         }
     }
 }

@@ -7,5 +7,6 @@ namespace Vibe.EF.Interface
     {
         User? GetUser(Guid userId);
         Result<Guid> SaveUserByClient(Guid clientId);
+        Result UpdateUser(User user);
     }
 }

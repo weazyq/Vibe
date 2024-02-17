@@ -43,5 +43,22 @@ namespace Vibe.EF
                 return Result.Fail("К сожалению не удалось создать твой аккаунт. Разработчики скоро всё починят.");
             }
         }
+
+        public Result UpdateUser(User user)
+        {
+            UserEntity? userEntity = _context.Users.FirstOrDefault(u => u.Id == user.Id);
+            if (userEntity is null) return Result.Fail("Пользователь не существует");
+
+            try
+            {
+                userEntity.UpdateFromUser(user);
+                _context.SaveChanges();
+                return Result.Success;
+            }
+            catch (Exception e)
+            {
+                return Result.Fail("Возникли ошибки при обновлении пользователя");
+            }
+        }
     }
 }
