@@ -30,7 +30,7 @@ builder.Services.AddScoped<IDataRepository<ScooterEntity>, ScooterRepository>();
 #endregion
 
 builder.Services.AddDbContext<DataContext>(options => options
-    .UseNpgsql("Server=localhost;Database=vibe;User Id=postgres;Password=9182kJKjk2hfj2!!jkdf3")
+    .UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
     .UseLowerCaseNamingConvention()
 );
 
