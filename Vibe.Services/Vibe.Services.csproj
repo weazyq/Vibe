@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.1.2" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Vibe.Domain\Vibe.Domain.csproj" />
     <ProjectReference Include="..\Vibe.EF\Vibe.EF.csproj" />
     <ProjectReference Include="..\Vibe.Tools\Vibe.Tools.csproj" />
