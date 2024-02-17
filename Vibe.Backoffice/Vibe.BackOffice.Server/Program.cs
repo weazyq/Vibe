@@ -9,6 +9,8 @@ using Vibe.Services.Clients;
 using Vibe.Services.Clients.Interface;
 using Vibe.Services.Scooters;
 using Vibe.Services.Scooters.Interface;
+using Vibe.Services.Users.Interface;
+using Vibe.Tools;
 using Vibe.Tools.JWT;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,13 +42,10 @@ builder.Services.AddDbContext<DataContext>(options => options
 
 builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection(nameof(JWTSettings)));
 
-String? secretKey = builder.Configuration.GetSection($"{nameof(JWTSettings)}:{nameof(JWTSettings.SecretKey)}").Value;
-var jwtSettings = new
-{
-    Issuer = builder.Configuration.GetSection($"{nameof(JWTSettings)}:{nameof(JWTSettings.Issuer)}").Value,
-    Audience = builder.Configuration.GetSection($"{nameof(JWTSettings)}:{nameof(JWTSettings.Audience)}").Value,
-    SigningKey = JWTTools.FormSingingKey(secretKey!)
-};
+String secretKey = CustomConfigurationExtensions.GetRequiredStringValue(builder.Configuration, nameof(JWTSettings), nameof(JWTSettings.SecretKey));
+String issuer = CustomConfigurationExtensions.GetRequiredStringValue(builder.Configuration, nameof(JWTSettings), nameof(JWTSettings.Issuer));
+String audience = CustomConfigurationExtensions.GetRequiredStringValue(builder.Configuration, nameof(JWTSettings), nameof(JWTSettings.Audience));
+SymmetricSecurityKey signingKey = JWTTools.FormSingingKey(secretKey!);
 
 builder.Services.AddAuthentication(options =>
 {
@@ -58,11 +57,11 @@ builder.Services.AddAuthentication(options =>
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
-        ValidIssuer = jwtSettings.Issuer,
+        ValidIssuer = issuer,
         ValidateAudience = true,
-        ValidAudience = jwtSettings.Audience,
+        ValidAudience = audience,
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = jwtSettings.SigningKey,
+        IssuerSigningKey = signingKey,
         ValidateLifetime = true
     };
 });
