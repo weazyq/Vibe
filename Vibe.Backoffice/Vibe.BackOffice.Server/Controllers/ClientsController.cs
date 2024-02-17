@@ -25,23 +25,24 @@ namespace Vibe.BackOffice.Server.Controllers
         }
         
         public record CheckSmsRequest(ClientBlank ClientBlank, String Code);
+        public record RegisterResultDto(String Token, Guid ClientId);
         [HttpPost("CheckSms")]
-        public Result<String> CheckSms([FromBody] CheckSmsRequest request)
+        public Result<RegisterResultDto?> CheckSms([FromBody] CheckSmsRequest request)
         {
             Result checkSmsResult = _clientService.CheckSms(request.ClientBlank, request.Code);
             if(checkSmsResult.IsFail) return checkSmsResult;
 
             Result<Guid> saveClientResult = _clientService.SaveClient(request.ClientBlank);
-            if (saveClientResult.IsFail) return new Result<String>("", saveClientResult.Error);
+            if (saveClientResult.IsFail) return new Result<RegisterResultDto?>(null, saveClientResult.Error);
 
             Result<Guid> saveUserResult = _userService.SaveUserByClient(saveClientResult.Value);
-            if (saveUserResult.IsFail) return new Result<String>("", saveClientResult.Error);
+            if (saveUserResult.IsFail) return new Result<RegisterResultDto?>(null, saveClientResult.Error);
 
             Result<(String Token, String RefreshToken)> loginResult = _userService.Login(saveUserResult.Value);
-            if (loginResult.IsFail) return new Result<String>("", loginResult.Error);
+            if (loginResult.IsFail) return new Result<RegisterResultDto?>(null, loginResult.Error);
 
             Response.Cookies.Append("refreshToken", loginResult.Data.RefreshToken);
-            return loginResult.Data.Token;
+            return new RegisterResultDto(loginResult.Data.Token, saveClientResult.Data);
         }
     }
 }

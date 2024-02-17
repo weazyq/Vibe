@@ -52,6 +52,7 @@ namespace Vibe.EF
             try
             {
                 userEntity.UpdateFromUser(user);
+                _context.Users.Update(userEntity);
                 _context.SaveChanges();
                 return Result.Success;
             }
