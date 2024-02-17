@@ -9,6 +9,7 @@ using Vibe.Services.Clients;
 using Vibe.Services.Clients.Interface;
 using Vibe.Services.Scooters;
 using Vibe.Services.Scooters.Interface;
+using Vibe.Services.Users;
 using Vibe.Services.Users.Interface;
 using Vibe.Tools;
 using Vibe.Tools.JWT;
@@ -22,7 +23,7 @@ builder.Services.AddControllers();
 #region Services
 builder.Services.AddScoped<IScootersService, ScootersService>();
 builder.Services.AddScoped<IClientService, ClientService>();
-
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddSingleton<IScootersProvider, ScootersProvider>();
 builder.Services.AddHttpClient<IScootersProvider, ScootersProvider>();
