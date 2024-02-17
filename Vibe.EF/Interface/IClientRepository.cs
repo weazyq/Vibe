@@ -5,6 +5,6 @@ namespace Vibe.EF.Interface
 {
     public interface IClientRepository
     {
-        DataResult<Guid> SaveClient(ClientBlank blank);
+        Result<Guid> SaveClient(ClientBlank blank);
     }
 }

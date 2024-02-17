@@ -1,11 +1,11 @@
 ﻿using Vibe.Domain.Users;
 using Vibe.Tools.Result;
 
-namespace Vibe.EF.Interface
+namespace Vibe.Services.Users.Interface
 {
-    public interface IUserRepository
+    public interface IUserService
     {
-        User? GetUser(Guid userId);
         Result<Guid> SaveUserByClient(Guid clientId);
+        User? GetUser(Guid userId);
     }
 }
