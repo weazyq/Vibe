@@ -66,23 +66,5 @@ namespace Vibe.VirtualScooter.Services
             IPEndPoint endPoint = (IPEndPoint)socket.LocalEndPoint;
             return (endPoint.Address.ToString(), endPoint.Port.ToString());
         }
-
-        public string GetLocalIp()
-        {
-            IPAddress[] ipAddresses = Dns.GetHostAddresses(Dns.GetHostName());
-            IPAddress ip = ipAddresses.Select(ip => ip).Where(ip => ip.AddressFamily == AddressFamily.InterNetwork).First();
-
-            return ip.ToString();
-        }
-
-        public string GetLocalPort()
-        {
-            var listener = new TcpListener(IPAddress.Any, 0);
-            listener.Start();
-            var port = ((IPEndPoint)listener.LocalEndpoint).Port;
-            listener.Stop();
-
-            return port.ToString();
-        }
     }
 }
