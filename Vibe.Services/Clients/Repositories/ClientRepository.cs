@@ -1,6 +1,7 @@
 ﻿using Vibe.Domain.Clients;
 using Vibe.EF.Entities;
 using Vibe.EF.Interface;
+using Vibe.Services.Clients.Converters;
 using Vibe.Tools.Result;
 
 namespace Vibe.EF
@@ -34,6 +35,14 @@ namespace Vibe.EF
             {
                 return Result.Fail("К сожалению не удалось создать твой аккаунт. Разработчики скоро всё починят.");
             }
+        }
+
+        public Client? GetClient(Guid id)
+        {
+            ClientEntity? client = _context.Clients.FirstOrDefault(c => c.Id == id);
+            if (client == null) return null;
+
+            return client.ToDomain();
         }
     }
 }

@@ -14,6 +14,6 @@ namespace Vibe.VirtualScooter.Data
         public Double Charge {  get; set; }
         public ScooterState State { get;set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime ModifiedAt { get; set; }
+        public DateTime? ModifiedAt { get; set; }
     }
 }

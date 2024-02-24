@@ -89,10 +89,11 @@ namespace Vibe.VirtualScooter.Modules
             State = ScooterState.Rented;
         }
 
-        public void EndRent()
+        public Result EndRent()
         {
             IsLocked = true;
             State = ScooterState.AvailableForRent;
+            return Result.Success;
         }
 
         public void SetCoordinates(Double x, Double y)

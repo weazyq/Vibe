@@ -7,6 +7,9 @@ using Vibe.EF.Entities;
 using Vibe.EF.Interface;
 using Vibe.Services.Clients;
 using Vibe.Services.Clients.Interface;
+using Vibe.Services.Rents;
+using Vibe.Services.Rents.Interface;
+using Vibe.Services.Rents.Repositories;
 using Vibe.Services.Scooters;
 using Vibe.Services.Scooters.Interface;
 using Vibe.Services.Users;
@@ -23,6 +26,7 @@ builder.Services.AddControllers();
 #region Services
 builder.Services.AddScoped<IScootersService, ScootersService>();
 builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IRentService, RentService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddSingleton<IScootersProvider, ScootersProvider>();
@@ -32,6 +36,7 @@ builder.Services.AddHttpClient<IScootersProvider, ScootersProvider>();
 #region Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<IRentRepository, RentRepository>();
 builder.Services.AddScoped<IPhoneCodeRepository, PhoneCodeRepository>();
 builder.Services.AddScoped<IDataRepository<ScooterEntity>, ScooterRepository>();
 #endregion

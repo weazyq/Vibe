@@ -16,6 +16,18 @@ namespace Vibe.Services.Clients
             _phoneCodeRepository = phoneCodeRepository;
             _clientRepository = clientRepository;
         }
+        public Result<Guid> SaveClient(ClientBlank clientBlank)
+        {
+            if (clientBlank.Name == null) return Result.Fail("Укажите имя");
+            if (clientBlank.Phone == null) return Result.Fail("Укажите номер телефона");
+
+            return _clientRepository.SaveClient(clientBlank);
+        }
+
+        public Client? GetClient(Guid clientId)
+        {
+            return _clientRepository.GetClient(clientId);
+        }
 
         public Result SendSms(String phoneNumber)
         {
@@ -40,12 +52,5 @@ namespace Vibe.Services.Clients
             return Result.Success;
         }
 
-        public Result<Guid> SaveClient(ClientBlank clientBlank)
-        {
-            if (clientBlank.Name == null) return Result.Fail("Укажите имя");
-            if (clientBlank.Phone == null) return Result.Fail("Укажите номер телефона");
-
-            return _clientRepository.SaveClient(clientBlank);
-        }
     }
 }
