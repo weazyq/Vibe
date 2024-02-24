@@ -12,7 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<DataContext>(options => options
-    .UseNpgsql("Server=localhost;Database=vibe;User Id=postgres;Password=123")
+    .UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
     .UseLowerCaseNamingConvention()
 );
 
