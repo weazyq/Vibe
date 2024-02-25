@@ -41,6 +41,7 @@ namespace Vibe.Services.Scooters
                 HttpResponseMessage response = await _httpClient.GetAsync(url);
                 string content = await response.Content.ReadAsStringAsync();
                 Result? result = JsonSerializer.Deserialize<Result>(content);
+                return result;
             }
             catch (Exception e)
             {

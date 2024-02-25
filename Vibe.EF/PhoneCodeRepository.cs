@@ -10,17 +10,17 @@ namespace Vibe.EF
 
         public PhoneCodeRepository(DataContext context) {  _context = context; }
 
-        public Result SaveSms(PhoneCodeEntity entity)
+        public Result SaveSms(String phone, String code)
         {
             try
             {
-                PhoneCodeEntity? phoneCode = _context.PhoneCodes.FirstOrDefault(pc => pc.Phone == entity.Phone);
+                PhoneCodeEntity? phoneCode = _context.PhoneCodes.FirstOrDefault(pc => pc.Phone == phone);
                 if (phoneCode != null)
                 {
-                    phoneCode.Code = entity.Code;
+                    phoneCode.Code = code;
                     _context.PhoneCodes.Update(phoneCode);
                 }
-                else _context.PhoneCodes.Add(entity);
+                else _context.PhoneCodes.Add(new PhoneCodeEntity { Code = code, Phone = phone });
             
                 _context.SaveChanges();
                 return Result.Success;

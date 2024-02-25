@@ -5,7 +5,7 @@ namespace Vibe.EF.Interface
 {
     public interface IPhoneCodeRepository
     {
-        Result SaveSms(PhoneCodeEntity entity);
+        Result SaveSms(String phoneNumber, String code);
         PhoneCodeEntity? GetSms(String phoneNumber);
     }
 }
