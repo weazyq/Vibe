@@ -1,4 +1,6 @@
-﻿namespace Vibe.Tools.Result
+﻿using System.Text.Json.Serialization;
+
+namespace Vibe.Tools.Result
 {
     public partial class Result : IResult
     {
@@ -13,6 +15,13 @@
         public Result(Error? error = null)
         {
             if (error != null) AddError(error);
+        }
+
+        [JsonConstructor]
+        public Result(List<Error>? errors, Boolean isSuccess, Boolean isFail)
+        {
+            if (errors is not null) 
+                AddErrors(errors);
         }
 
         public void AddError(Error error)
