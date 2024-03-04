@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Vibe.BackOffice.Server.Tools;
+using Vibe.Configurator.Configuration;
 using Vibe.EF;
 using Vibe.EF.Entities;
 using Vibe.EF.Interface;
@@ -46,12 +47,12 @@ builder.Services.AddDbContext<DataContext>(options => options
     .UseLowerCaseNamingConvention()
 );
 
-builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection(nameof(JWTSettings)));
+JWTSettings.SecretKey = CustomConfigurationExtensions.GetRequiredStringValue(builder.Configuration, nameof(JWTSettings), nameof(JWTSettings.SecretKey));
+JWTSettings.Issuer = CustomConfigurationExtensions.GetRequiredStringValue(builder.Configuration, nameof(JWTSettings), nameof(JWTSettings.Issuer));
+JWTSettings.Audience = CustomConfigurationExtensions.GetRequiredStringValue(builder.Configuration, nameof(JWTSettings), nameof(JWTSettings.Audience));
+SymmetricSecurityKey signingKey = JWTTools.FormSingingKey(JWTSettings.SecretKey!);
 
-String secretKey = CustomConfigurationExtensions.GetRequiredStringValue(builder.Configuration, nameof(JWTSettings), nameof(JWTSettings.SecretKey));
-String issuer = CustomConfigurationExtensions.GetRequiredStringValue(builder.Configuration, nameof(JWTSettings), nameof(JWTSettings.Issuer));
-String audience = CustomConfigurationExtensions.GetRequiredStringValue(builder.Configuration, nameof(JWTSettings), nameof(JWTSettings.Audience));
-SymmetricSecurityKey signingKey = JWTTools.FormSingingKey(secretKey!);
+VirtualScooterSettings.Host = CustomConfigurationExtensions.GetRequiredStringValue(builder.Configuration, nameof(VirtualScooterSettings), nameof(VirtualScooterSettings.Host));
 
 builder.Services.AddAuthentication(options =>
 {
@@ -63,9 +64,9 @@ builder.Services.AddAuthentication(options =>
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
-        ValidIssuer = issuer,
+        ValidIssuer = JWTSettings.Issuer,
         ValidateAudience = true,
-        ValidAudience = audience,
+        ValidAudience = JWTSettings.Audience,
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = signingKey,
         ValidateLifetime = true
