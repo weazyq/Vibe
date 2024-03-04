@@ -2,15 +2,15 @@
 {
     public class Rent
     {
-        public Guid Id;
-        public Guid ClientId;
-        public Guid ScooterId;
-        public Decimal? Price;
-        public Boolean IsClosed;
-        public DateTime StartedAt;
-        public DateTime? EndedAt;
-        public DateTime CreatedAt;
-        public DateTime? ModifiedAt;
+        public Guid Id { get; }
+        public Guid ClientId { get; private set; }
+        public Guid ScooterId { get; private set; }
+        public Decimal? Price { get; private set; }
+        public Boolean IsClosed { get; private set; }
+        public DateTime StartedAt { get; private set; }
+        public DateTime? EndedAt { get; private set; }
+        public DateTime CreatedAt { get; private set; }
+        public DateTime? ModifiedAt { get; private set; }
 
         public Rent(Guid id, Guid clientId, Guid scooterId, Decimal? price, Boolean isClosed, DateTime startedAt, DateTime? endedAt, DateTime createdAt, DateTime? modifiedAt)
         {

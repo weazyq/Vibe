@@ -2,14 +2,14 @@
 {
     public class Client
     {
-        public Guid Id;
-        public String Name;
-        public String Phone;
-        public DateTime CreatedAt;
-        public Guid? CreatedBy;
-        public DateTime? ModifiedAt;
-        public Guid? UpdatedBy;
-        public Boolean IsRemoved;
+        public Guid Id { get; }
+        public String Name { get; }
+        public String Phone { get; }
+        public DateTime CreatedAt { get; }
+        public Guid? CreatedBy { get; }
+        public DateTime? ModifiedAt { get; }
+        public Guid? UpdatedBy { get; }
+        public Boolean IsRemoved { get; }
 
         public Client(Guid id, String name, String phone, DateTime createdAt, Guid? createdBy, DateTime? modifiedAt, Guid? updatedBy, Boolean isRemoved)
         {
