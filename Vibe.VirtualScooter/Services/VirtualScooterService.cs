@@ -1,8 +1,9 @@
 ﻿using System.Net;
+using System.Web;
 using System.Net.Sockets;
-using Vibe.Domain.Scooter;
 using Vibe.VirtualScooter.Data;
 using Vibe.VirtualScooter.Modules;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 
 namespace Vibe.VirtualScooter.Services
 {
@@ -17,7 +18,6 @@ namespace Vibe.VirtualScooter.Services
 
         public void Initialize()
         {
-            String? currentUrl = Environment.GetEnvironmentVariable("ASPNETCORE_URLS");
             String? serialNumber = Environment.GetEnvironmentVariable("SCOOTER_SERIALNUMBER") ?? throw new ArgumentNullException();
             Double latitude = Double.Parse(Environment.GetEnvironmentVariable("SCOOTER_LATITUDE") ?? throw new ArgumentNullException());
             Double longitude = Double.Parse(Environment.GetEnvironmentVariable("SCOOTER_LONGITUDE") ?? throw new ArgumentNullException());
@@ -25,11 +25,9 @@ namespace Vibe.VirtualScooter.Services
             VirtualScooterData.Instance.SetCoordinates(latitude, longitude);
             VirtualScooterData.Instance.SetSerialNumber(serialNumber);
 
-            if (String.IsNullOrEmpty(currentUrl))
-            {
-                (String ip, String port) = GetLocalIPv4Address();
-                currentUrl = $"https://{ip}:{port}";
-            }
+            Console.WriteLine($"{nameof(serialNumber)}: {serialNumber}");
+            Console.WriteLine($"{nameof(latitude)}: {latitude}");
+            Console.WriteLine($"{nameof(longitude)}: {longitude}");
 
             ScooterEntity? entity = _dataContext.Scooters.Select(s => s)
                 .Where(s => s.SerialNumber == serialNumber)
@@ -40,31 +38,16 @@ namespace Vibe.VirtualScooter.Services
                 entity = new()
                 {
                     Id = Guid.NewGuid(),
-                    Url = currentUrl,
                     SerialNumber = serialNumber,
                     CreatedAt = DateTime.UtcNow
                 };
 
                 _dataContext.Add(entity);
             }
-            else if (entity != null && entity.Url != currentUrl)
-            {
-                entity.Url = currentUrl;
-                entity.ModifiedAt = DateTime.UtcNow;
-                _dataContext.Update(entity);
-            }
 
             _dataContext.SaveChanges();
 
             VirtualScooterData.Instance.SetScooterId(entity!.Id);
-        }
-
-        public static (String, String) GetLocalIPv4Address(String? targetIp = null)
-        {
-            using Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0);
-            socket.Connect(targetIp ?? "8.8.8.8", 65530);
-            IPEndPoint endPoint = (IPEndPoint)socket.LocalEndPoint;
-            return (endPoint.Address.ToString(), endPoint.Port.ToString());
         }
     }
 }

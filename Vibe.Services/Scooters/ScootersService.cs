@@ -31,9 +31,20 @@ namespace Vibe.Services.Scooters
             return _scooterRepository.List().ToDomain();
         }
 
-        public async Task<Result> CheckScooterAvailability(Scooter scooter) 
+        public async Task<Result> CheckScooterAvailability(Guid scooterId) 
         {
+            Scooter? scooter = GetScooter(scooterId);
+            if (scooter is null) return Result.Fail("Указанный самокат не найден в системе");
+
             return await _scootersProvider.CheckScooterAvailability(scooter);
+        }
+
+        public async Task<Result> EndRent(Guid scooterId)
+        {
+            Scooter? scooter = GetScooter(scooterId);
+            if (scooter is null) return Result.Fail("Указанный самокат не найден в системе");
+
+            return await _scootersProvider.EndRent(scooter);
         }
 
         public ScooterView GetScooterView(Guid id)

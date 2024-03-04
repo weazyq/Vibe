@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using Vibe.Configurator.Configuration;
 using Vibe.Domain.Scooter;
 using Vibe.Services.Scooters.Interface;
 using Vibe.Tools.Result;
@@ -16,7 +17,7 @@ namespace Vibe.Services.Scooters
 
         public async Task<Result> CheckScooterAvailability(Scooter scooter)
         {
-            Uri url = MakeApiUrl(scooter, "CheckScooterAvailability");
+            Uri url = MakeApiUrl(scooter.SerialNumber, "CheckScooterAvailability");
             try
             {
                 HttpResponseMessage response = await _httpClient.GetAsync(url);
@@ -32,9 +33,29 @@ namespace Vibe.Services.Scooters
             return Result.Fail("Не удалось получить информацию о состоянии самоката");
         }
 
-        private Uri MakeApiUrl(Scooter scooter, String action)
+        public async Task<Result> EndRent(Scooter scooter)
         {
-            Uri url = new($"{scooter.Url}/{action}");
+            Uri url = MakeApiUrl(scooter.SerialNumber, "EndRent");
+
+            try
+            {
+                HttpResponseMessage response = await _httpClient.GetAsync(url);
+                string content = await response.Content.ReadAsStringAsync();
+                Result? result = JsonSerializer.Deserialize<Result>(content);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        private Uri MakeApiUrl(String serialNumber, String action)
+        {
+            String host = VirtualScooterSettings.Host;
+            host = host.Replace("{SerialNumber}", serialNumber);
+
+            Uri url = new($"{host}/{action}");
             return url;
         }
     }

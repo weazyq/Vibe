@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Vibe.Configurator\Vibe.Configurator.csproj" />
     <ProjectReference Include="..\..\Vibe.Domain\Vibe.Domain.csproj" />
     <ProjectReference Include="..\..\Vibe.EF\Vibe.EF.csproj" />
     <ProjectReference Include="..\..\Vibe.Services\Vibe.Services.csproj" />

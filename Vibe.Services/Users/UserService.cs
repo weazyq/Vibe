@@ -4,7 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using Vibe.BackOffice.Server.Tools;
+using Vibe.Configurator.Configuration;
 using Vibe.Domain.Users;
 using Vibe.EF.Interface;
 using Vibe.Services.Users.Interface;
@@ -62,6 +62,7 @@ namespace Vibe.Services.Users
             //срок действия токена
             DateTime startDateTime = DateTime.UtcNow;
             DateTime expireDateTime = DateTime.UtcNow.AddDays(1);
+
 
             String secretKey = CustomConfigurationExtensions.GetRequiredStringValue(_configuration, nameof(JWTSettings), nameof(JWTSettings.SecretKey));
             String issuer = CustomConfigurationExtensions.GetRequiredStringValue(_configuration, nameof(JWTSettings), nameof(JWTSettings.Issuer));

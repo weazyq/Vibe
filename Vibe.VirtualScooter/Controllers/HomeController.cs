@@ -13,6 +13,12 @@ public class HomeController : Controller
         return VirtualScooterData.Instance.CheckScooterAvailability();
     }
 
+    [HttpGet("EndRent")]
+    public Result EndRent()
+    {
+        return VirtualScooterData.Instance.EndRent();
+    }
+
     [HttpGet("ScooterMove")]
     public void ScooterMove(Double x, Double y)
     {

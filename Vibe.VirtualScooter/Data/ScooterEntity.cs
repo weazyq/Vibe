@@ -6,9 +6,8 @@ namespace Vibe.VirtualScooter.Data
     public class ScooterEntity
     {
         public Guid Id { get; set; }
-        public String SerialNumber { get; set; }
-        public String Url { get; set; }
+        public String SerialNumber { get; set; } = String.Empty;
         public DateTime CreatedAt { get; set; }
-        public DateTime ModifiedAt { get; set; }
+        public DateTime? ModifiedAt { get; set; }
     }
 }

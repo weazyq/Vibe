@@ -3,13 +3,11 @@
     public class Scooter
     {
         public Guid Id { get; }
-        public String Url { get; }
         public String SerialNumber { get; }
 
-        public Scooter(Guid id, String url, string serialNumber)
+        public Scooter(Guid id, string serialNumber)
         {
             Id = id;
-            Url = url;
             SerialNumber = serialNumber;
         }
     }

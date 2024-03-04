@@ -16,16 +16,34 @@ namespace Vibe.Services.Clients
             _phoneCodeRepository = phoneCodeRepository;
             _clientRepository = clientRepository;
         }
+        public Result<Guid> SaveClient(ClientBlank clientBlank)
+        {
+            if (clientBlank.Name == null) return Result.Fail("Укажите имя");
+            if (clientBlank.Phone == null) return Result.Fail("Укажите номер телефона");
+
+            return _clientRepository.SaveClient(clientBlank);
+        }
+
+        public Client? GetClient(Guid clientId)
+        {
+            return _clientRepository.GetClient(clientId);
+        }
 
         public Result SendSms(String phoneNumber)
         {
-            PhoneCodeEntity entity = new PhoneCodeEntity
-            {
-                Code = "0000",
-                Phone = phoneNumber
-            };
+            Random rnd = new Random();
 
-            return _phoneCodeRepository.SaveSms(entity);
+            String code = "";
+            Int32 codeLength = 4;
+            for (int i = 0; i < codeLength; i++)
+            {
+                Int32 number = rnd.Next(0, 9);
+                code += number.ToString();
+            }
+
+            if (String.IsNullOrEmpty(code)) return Result.Fail("Не удалось сгенерировать код для регистрации");
+
+            return _phoneCodeRepository.SaveSms(phoneNumber, code);
         }
 
         public Result CheckSms(ClientBlank clientBlank, String code)
@@ -38,14 +56,6 @@ namespace Vibe.Services.Clients
             if (!code.Equals(phoneCode.Code)) return Result.Fail("Введённый тобой код не совпадает с отправленным");
 
             return Result.Success;
-        }
-
-        public Result<Guid> SaveClient(ClientBlank clientBlank)
-        {
-            if (clientBlank.Name == null) return Result.Fail("Укажите имя");
-            if (clientBlank.Phone == null) return Result.Fail("Укажите номер телефона");
-
-            return _clientRepository.SaveClient(clientBlank);
         }
     }
 }

@@ -1,11 +1,12 @@
-﻿using Vibe.VirtualScooter.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Vibe.VirtualScooter.Data;
 using Vibe.VirtualScooter.Modules;
 
 namespace Vibe.VirtualScooter.Services
 {
     public class ScooterScheduler : BackgroundService
     {
-        private readonly PeriodicTimer _timer = new(TimeSpan.FromSeconds(5));
+        private readonly PeriodicTimer _timer = new(TimeSpan.FromMinutes(5));
         private readonly IServiceProvider _serviceProvider;
 
         public ScooterScheduler(IServiceProvider serviceProvider)
@@ -38,8 +39,16 @@ namespace Vibe.VirtualScooter.Services
             using (var scope = _serviceProvider.CreateScope())
             {
                 var dataContext = scope.ServiceProvider.GetService<DataContext>();
+                if (dataContext is null) throw new NullReferenceException("Не удалось получить DataContext виртуальному самокату");
 
-                await dataContext.AddAsync(scooterInfo);
+                ScooterInfoEntity? existScooterInfo = dataContext.ScooterInfos.FirstOrDefault(info => info.ScooterId == scooterInfo.ScooterId);
+                
+                if (existScooterInfo is null) await dataContext.ScooterInfos.AddAsync(scooterInfo);
+                else {
+                    existScooterInfo.Update(scooterInfo);
+                    dataContext.ScooterInfos.Update(existScooterInfo);
+                }
+
                 await dataContext.SaveChangesAsync();
             }
         }

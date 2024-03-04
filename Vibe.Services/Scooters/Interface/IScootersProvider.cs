@@ -6,5 +6,6 @@ namespace Vibe.Services.Scooters.Interface
     public interface IScootersProvider
     {
         public Task<Result> CheckScooterAvailability(Scooter scooter);
+        public Task<Result> EndRent(Scooter scooter);
     }
 }

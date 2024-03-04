@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Vibe.Domain.Clients;
-using Vibe.Domain.Users;
 using Vibe.Services.Clients.Interface;
 using Vibe.Services.Users.Interface;
 using Vibe.Tools.Result;
