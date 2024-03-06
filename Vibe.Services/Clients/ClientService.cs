@@ -29,6 +29,11 @@ namespace Vibe.Services.Clients
             return _clientRepository.GetClient(clientId);
         }
 
+        public Client GetClientByUser(Guid userId)
+        {
+            return _clientRepository.GetClientByUser(userId);
+        }
+
         public Result SendSms(String phoneNumber)
         {
             Random rnd = new Random();

@@ -21,6 +21,12 @@ namespace Vibe.BackOffice.Server.Controllers
             _authService = authService;
         }
 
+        [HttpGet("GetClient")]
+        public Client GetClientByUser(String userId)
+        {
+            return _clientService.GetClientByUser(userId);
+        }
+
         [HttpGet("SendSms")]
         public Result SendSms(String phoneNumber)
         {

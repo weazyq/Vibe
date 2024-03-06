@@ -7,6 +7,7 @@ namespace Vibe.Services.Clients.Interface
     {
         Result<Guid> SaveClient(ClientBlank clientBlank);
         Client? GetClient(Guid clientId);
+        Client GetClientByUser(Guid userId);
         Result SendSms(String phoneNumber);
         Result CheckSms(ClientBlank blank, String code);
     }

@@ -44,5 +44,13 @@ namespace Vibe.EF
 
             return client.ToDomain();
         }
+
+        public Client GetClientByUser(Guid userId)
+        {
+            UserEntity user = _context.Users.First(u => u.Id == userId);
+            ClientEntity clientEntity = _context.Clients.First(cl => cl.Id == user.ClientId);
+
+            return clientEntity.ToDomain();
+        }
     }
 }
