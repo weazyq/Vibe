@@ -8,6 +8,8 @@ using Vibe.EF.Entities;
 using Vibe.EF.Interface;
 using Vibe.Services.Clients;
 using Vibe.Services.Clients.Interface;
+using Vibe.Services.Infrastructure;
+using Vibe.Services.Infrastructure.Interface;
 using Vibe.Services.Rents;
 using Vibe.Services.Rents.Interface;
 using Vibe.Services.Rents.Repositories;
@@ -29,6 +31,7 @@ builder.Services.AddScoped<IScootersService, ScootersService>();
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IRentService, RentService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddSingleton<IScootersProvider, ScootersProvider>();
 builder.Services.AddHttpClient<IScootersProvider, ScootersProvider>();

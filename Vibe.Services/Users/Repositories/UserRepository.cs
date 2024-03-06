@@ -23,6 +23,14 @@ namespace Vibe.EF
             return userEntity.ToDomain();
         }
 
+        public User? GetUserByRefreshToken(String refreshToken)
+        {
+            UserEntity? userEntity = _context.Users.FirstOrDefault(u => u.RefreshToken == refreshToken);
+            if(userEntity == null) return null;
+
+            return userEntity.ToDomain();
+        }
+
         public Result<Guid> SaveUserByClient(Guid clientId)
         {
             try
