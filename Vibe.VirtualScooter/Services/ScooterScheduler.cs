@@ -26,9 +26,9 @@ namespace Vibe.VirtualScooter.Services
         {
             if(VirtualScooterData.Instance.ScooterId == null) return;
 
-            ScooterInfoEntity scooterInfo = new()
+            ScooterEntity scooterInfo = new()
             {
-                ScooterId = (Guid)VirtualScooterData.Instance.ScooterId,
+                Id = (Guid)VirtualScooterData.Instance.ScooterId,
                 Latitude = VirtualScooterData.Instance.Latitude,
                 Longitude = VirtualScooterData.Instance.Longitude,
                 Charge = VirtualScooterData.Instance.Battery.Charge,
@@ -41,12 +41,12 @@ namespace Vibe.VirtualScooter.Services
                 var dataContext = scope.ServiceProvider.GetService<DataContext>();
                 if (dataContext is null) throw new NullReferenceException("Не удалось получить DataContext виртуальному самокату");
 
-                ScooterInfoEntity? existScooterInfo = dataContext.ScooterInfos.FirstOrDefault(info => info.ScooterId == scooterInfo.ScooterId);
+                ScooterEntity? existScooterInfo = dataContext.Scooters.FirstOrDefault(info => info.Id == scooterInfo.Id);
                 
-                if (existScooterInfo is null) await dataContext.ScooterInfos.AddAsync(scooterInfo);
+                if (existScooterInfo is null) await dataContext.Scooters.AddAsync(scooterInfo);
                 else {
                     existScooterInfo.Update(scooterInfo);
-                    dataContext.ScooterInfos.Update(existScooterInfo);
+                    dataContext.Scooters.Update(existScooterInfo);
                 }
 
                 await dataContext.SaveChangesAsync();
