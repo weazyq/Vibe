@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Vibe.Domain.Scooter;
 using Vibe.Services.Scooters.Interface;
-using Vibe.Tools.Result;
 
 namespace Vibe.BackOffice.Server.Controllers
 {

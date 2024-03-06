@@ -42,7 +42,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IRentRepository, RentRepository>();
 builder.Services.AddScoped<IPhoneCodeRepository, PhoneCodeRepository>();
-builder.Services.AddScoped<IDataRepository<ScooterEntity>, ScooterRepository>();
+builder.Services.AddScoped<IScooterRepository, ScooterRepository>();
 #endregion
 
 builder.Services.AddDbContext<DataContext>(options => options

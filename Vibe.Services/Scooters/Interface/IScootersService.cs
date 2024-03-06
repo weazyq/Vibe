@@ -7,8 +7,6 @@ namespace Vibe.Services.Scooters.Interface
     {
         Task<Result> CheckScooterAvailability(Guid id);
         Scooter? GetScooter(Guid id);
-        Scooter[] GetScooters();
-        ScooterView GetScooterView(Guid id);
         Task<Result> EndRent(Guid scooterId);
     }
 }
