@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Vibe.Domain.Scooter;
 using Vibe.Services.Scooters.Interface;
 
 namespace Vibe.BackOffice.Server.Controllers
@@ -10,6 +11,12 @@ namespace Vibe.BackOffice.Server.Controllers
         public ScooterController(IScootersService scootersService) 
         {
             _scootersService = scootersService;
+        }
+
+        [HttpGet("GetScooters")]
+        public Scooter[] GetScooters()
+        {
+            return _scootersService.GetScooters();
         }
     }
 }

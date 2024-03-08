@@ -21,6 +21,11 @@ namespace Vibe.Services.Scooters
             return _scooterRepository.GetScooter(id);
         }
 
+        public Scooter[] GetScooters()
+        {
+            return _scooterRepository.GetScooters();
+        }
+
         public async Task<Result> CheckScooterAvailability(Guid scooterId) 
         {
             Scooter? scooter = GetScooter(scooterId);

@@ -21,5 +21,11 @@ namespace Vibe.EF
 
             return scooterEntity.ToDomain();
         }
+
+        public Scooter[] GetScooters()
+        {
+            ScooterEntity[] scooterEntities = _context.Scooters.ToArray();
+            return scooterEntities.ToDomain();
+        }
     }
 }
