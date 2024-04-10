@@ -1,7 +1,94 @@
-# Vibe.Backoffice
+[Генерация таблиц БД.txt](https://github.com/weazyq/Vibe/files/14935530/default.txt)# Vibe.Backoffice
 
 Для полной работы:
-1) Развернуть базу данных с таблицами
+1) Развернуть базу данных с таблицами [UНазвание Database: vibe
+User Id: postgres
+Password: 9182kJKjk2hfj2!!jkdf3
+
+-- public.clients определение
+
+CREATE TABLE public.clients (
+	id uuid NOT NULL,
+	"name" varchar NOT NULL,
+	phone varchar NOT NULL,
+	createdat timestamptz NOT NULL,
+	createdby uuid NULL,
+	modifiedat timestamptz NULL,
+	updatedby uuid NULL,
+	isremoved bool DEFAULT false NOT NULL,
+	CONSTRAINT clients_unique UNIQUE (id)
+);
+
+-- public.employees определение
+
+CREATE TABLE public.employees (
+	id uuid NOT NULL,
+	"name" varchar NOT NULL,
+	phone varchar NOT NULL,
+	email varchar NOT NULL,
+	"role" int4 NOT NULL,
+	createdat timestamptz NOT NULL,
+	createdby uuid NULL,
+	modifiedat timestamptz NULL,
+	updatedby uuid NULL,
+	isremoved bool DEFAULT false NOT NULL,
+	CONSTRAINT employees_unique UNIQUE (id)
+);
+
+-- public.phonecodes определение
+
+CREATE TABLE public.phonecodes (
+	phone varchar NOT NULL,
+	code varchar NOT NULL,
+	CONSTRAINT phonecodes_unique UNIQUE (phone)
+);
+
+-- public.rents определение
+
+CREATE TABLE public.rents (
+	id uuid NOT NULL,
+	clientid uuid NOT NULL,
+	scooterid uuid NOT NULL,
+	price numeric NULL,
+	isclosed bool DEFAULT false NOT NULL,
+	startedat timestamptz NOT NULL,
+	endedat timestamptz NULL,
+	createdat timestamptz NOT NULL,
+	modifiedat timestamptz NULL,
+	CONSTRAINT rents_unique UNIQUE (id)
+);
+
+-- public.scooters определение
+
+CREATE TABLE public.scooters (
+	id uuid NOT NULL,
+	serialnumber varchar NULL,
+	createdat timestamptz NOT NULL,
+	modifiedat timestamptz NULL,
+	latitude numeric NULL,
+	longitude numeric NULL,
+	charge numeric NULL,
+	state int4 NULL,
+	CONSTRAINT scooters_unique UNIQUE (id)
+);
+
+-- public.users определение
+
+CREATE TABLE public.users (
+	id uuid NOT NULL,
+	employeeid uuid NULL,
+	clientid uuid NULL,
+	refreshtoken varchar NULL,
+	tokencreated timestamptz NOT NULL,
+	tokenexpires timestamptz NOT NULL,
+	createdat timestamptz NOT NULL,
+	createdby uuid NULL,
+	modifiedat timestamptz NULL,
+	updatedby uuid NULL,
+	isremoved bool DEFAULT false NOT NULL,
+	CONSTRAINT users_unique UNIQUE (id)
+);ploading Генерация таблиц БД.txt…]()
+
 2) Запустить Vibe.BackOffice.Server
 3) Сделать Publish Vibe.VirtualScooter проекта
 4) В компонентах Windows включить IIS службы
