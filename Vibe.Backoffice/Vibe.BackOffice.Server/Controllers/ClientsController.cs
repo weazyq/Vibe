@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Vibe.Domain.Clients;
 using Vibe.Domain.Infrastructure;
 using Vibe.Services.Clients.Interface;
 using Vibe.Services.Infrastructure.Interface;
 using Vibe.Services.Users.Interface;
+using Vibe.Tools.ControllerExtenstions;
 using Vibe.Tools.Result;
 
 namespace Vibe.BackOffice.Server.Controllers
@@ -21,10 +23,11 @@ namespace Vibe.BackOffice.Server.Controllers
             _authService = authService;
         }
 
+        [Authorize(Roles = "Client")]
         [HttpGet("GetClient")]
-        public Client GetClientByUser(String userId)
+        public Client GetClientByUser()
         {
-            return _clientService.GetClientByUser(userId);
+            return _clientService.GetClientByUser(User.GetUserId());
         }
 
         [HttpGet("SendSms")]
