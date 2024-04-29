@@ -40,7 +40,7 @@ namespace Vibe.Services.Rents
         public async Task<Result> EndRent(Guid rentId)
         {
             Rent? rent = GetRent(rentId);
-            if (rent is null) return Result.Fail("");
+            if (rent is null) return Result.Fail("Указанной аренды не существует");
             rent.EndRent();
             
             Result endRentResult = await _scootersService.EndRent(rent.ScooterId);
@@ -52,6 +52,27 @@ namespace Vibe.Services.Rents
         public Rent? GetRent(Guid rentId)
         {
             return _rentRepository.GetRent(rentId);
+        }
+
+        public Rent? GetRentByClient(Guid clientId)
+        {
+            return _rentRepository.GetRentByClient(clientId);
+        }
+
+        public Rent? GetActiveUserRent(Guid userId)
+        {
+            Client? client = _clientService.GetClientByUser(userId);
+            if (client == null) return null;
+
+            return _rentRepository.GetActiveRent(client.Id);
+        }
+
+        public Rent[] GetRentHistory(Guid userId)
+        {
+            Client? client = _clientService.GetClientByUser(userId);
+            if (client == null) return [];
+
+            return _rentRepository.GetRentHistory(client.Id);
         }
     }
 }

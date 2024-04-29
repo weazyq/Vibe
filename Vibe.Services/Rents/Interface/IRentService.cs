@@ -5,7 +5,10 @@ namespace Vibe.Services.Rents.Interface
 {
     public interface IRentService
     {
-        public Task<Result<Rent>> Initialize(Guid scooterId, Guid clientId);
-        public Task<Result> EndRent(Guid rentId);
+        Task<Result<Rent>> Initialize(Guid scooterId, Guid clientId);
+        Task<Result> EndRent(Guid rentId);
+        Rent? GetRentByClient(Guid clientId);
+        Rent? GetActiveUserRent(Guid userId);
+        Rent[] GetRentHistory(Guid userId);
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Vibe.Domain.Rents;
 using Vibe.Services.Rents.Interface;
+using Vibe.Tools.ControllerExtenstions;
 using Vibe.Tools.Result;
 
 namespace Vibe.BackOffice.Server.Controllers
@@ -22,9 +23,24 @@ namespace Vibe.BackOffice.Server.Controllers
         }
 
         [HttpGet("EndRent")]
+        [Authorize(Roles = "Client")]
         public async Task<Result> EndRent(Guid rentId)
         {
             return await _rentService.EndRent(rentId);
+        }
+
+        [HttpGet("GetActiveUserRent")]
+        [Authorize(Roles = "Client")]
+        public Result<Rent?> GetUserRent()
+        {
+            return _rentService.GetActiveUserRent(User.GetUserId());
+        }
+
+        [HttpGet("GetRentHistory")]
+        [Authorize(Roles = "Client")]
+        public Rent[] GetRentHistory()
+        {
+            return _rentService.GetRentHistory(User.GetUserId());
         }
     }
 }

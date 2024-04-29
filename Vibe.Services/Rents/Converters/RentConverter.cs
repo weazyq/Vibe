@@ -9,5 +9,10 @@ namespace Vibe.Services.Rents.Converters
         {
             return new Rent(entity.Id, entity.ClientId, entity.ScooterId, entity.Price, entity.IsClosed, entity.StartedAt, entity.EndedAt, entity.CreatedAt, entity.ModifiedAt);
         }
+
+        public static Rent[] ToDomains(this RentEntity[] entities)
+        {
+            return entities.Select(e => e.ToDomain()).ToArray();
+        }
     }
 }

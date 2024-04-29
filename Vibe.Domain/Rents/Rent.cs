@@ -28,7 +28,7 @@
         public void EndRent()
         {
             EndedAt = DateTime.UtcNow;
-            Price = (EndedAt.Value.Minute - StartedAt.Minute) * 5;
+            Price = (EndedAt.Value - StartedAt).Minutes * 5;
             ModifiedAt = DateTime.UtcNow;
             IsClosed = true;
         }

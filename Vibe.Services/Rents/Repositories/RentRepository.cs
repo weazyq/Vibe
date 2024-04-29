@@ -18,32 +18,24 @@ namespace Vibe.Services.Rents.Repositories
 
         public Guid Save(Guid clientId, Guid scooterId)
         {
-            try
+            RentEntity entity = new RentEntity
             {
-                RentEntity entity = new RentEntity
-                {
-                    Id = Guid.NewGuid(),
-                    ClientId = clientId,
-                    ScooterId = scooterId,
-                    CreatedAt = DateTime.UtcNow,
-                    StartedAt = DateTime.UtcNow,
-                    EndedAt = DateTime.UtcNow,
-                };
+                Id = Guid.NewGuid(),
+                ClientId = clientId,
+                ScooterId = scooterId,
+                CreatedAt = DateTime.UtcNow,
+                StartedAt = DateTime.UtcNow,
+                EndedAt = DateTime.UtcNow,
+            };
 
-                _context.Rents.Add(entity);
-                _context.SaveChanges();
-                return entity.Id;
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
+            _context.Rents.Add(entity);
+            _context.SaveChanges();
+            return entity.Id;
         }
 
         public Result UpdateRent(Rent rent)
         {
-            RentEntity? rentEntity = _context.Rents.FirstOrDefault(r => r.Id == rent.Id);
-            if (rentEntity == null) return Result.Fail("");
+            RentEntity? rentEntity = _context.Rents.First(r => r.Id == rent.Id);
 
             rentEntity.UpdateByRent(rent);
             _context.Rents.Update(rentEntity);
@@ -57,6 +49,36 @@ namespace Vibe.Services.Rents.Repositories
             if (entity is null) return null;
 
             return entity.ToDomain();
+        }
+
+        public Rent? GetRentByClient(Guid clientId)
+        {
+            RentEntity? rent = _context.Rents.FirstOrDefault();
+            if (rent is null) return null;
+            return rent.ToDomain();
+        }
+
+        public Rent? GetActiveRent(Guid clientId)
+        {
+            RentEntity? rent = _context.Rents
+                .Where(r => r.ClientId == clientId)
+                .Where(r => !r.IsClosed)
+                .OrderByDescending(r => r.StartedAt)
+                .FirstOrDefault();
+
+            if (rent is null) return null;
+            return rent.ToDomain();
+        }
+
+        public Rent[] GetRentHistory(Guid clientId)
+        {
+            RentEntity[] rentEntities = _context.Rents
+                .Where(r => r.ClientId == clientId)
+                .Where(r => r.IsClosed)
+                .OrderBy(r => r.StartedAt)
+                .ToArray();
+
+            return rentEntities.ToDomains();
         }
     }
 }

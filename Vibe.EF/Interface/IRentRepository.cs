@@ -5,8 +5,11 @@ namespace Vibe.EF.Interface
 {
     public interface IRentRepository
     {
-        public Guid Save(Guid clientId, Guid scooterId);
-        public Rent? GetRent(Guid id);
-        public Result UpdateRent(Rent rent);
+        Guid Save(Guid clientId, Guid scooterId);
+        Rent? GetRent(Guid id);
+        Rent? GetRentByClient(Guid clientId);
+        Rent? GetActiveRent(Guid clientId);
+        Rent[] GetRentHistory(Guid clientId);
+        Result UpdateRent(Rent rent);
     }
 }
