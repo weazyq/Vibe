@@ -4,9 +4,10 @@ namespace Vibe.Tools.Result
 {
     public partial class Result : IResult
     {
-        private Error[] _errors => new Error[] { };
+        public Error? Error { get; private set; }
 
-        public List<Error> Errors => _errors.ToList();
+        [JsonPropertyName("errors")]
+        public List<Error> Errors { get; }
 
         public Boolean IsSuccess => Errors.IsEmpty();
 
@@ -14,14 +15,23 @@ namespace Vibe.Tools.Result
 
         public Result(Error? error = null)
         {
-            if (error != null) AddError(error);
+            Error = error;
+            Errors = Error switch
+            {
+                null => new(),
+                _ => new List<Error> { Error }
+            };
         }
 
         [JsonConstructor]
-        public Result(List<Error>? errors, Boolean isSuccess, Boolean isFail)
+        public Result(List<Error>? errors)
         {
-            if (errors is not null) 
-                AddErrors(errors);
+            if (errors is not null) { 
+                Errors = errors;
+            } else
+            {
+                Errors = new List<Error>();
+            }
         }
 
         public void AddError(Error error)
@@ -38,9 +48,7 @@ namespace Vibe.Tools.Result
 
         public static Result Fail(String message) 
         {
-            Result result = new Result();
-            result.AddError(new Error(message));
-
+            Result result = new Result(new Error(message));
             return result;
         }
 
