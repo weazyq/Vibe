@@ -25,10 +25,6 @@ namespace Vibe.VirtualScooter.Services
             VirtualScooterData.Instance.SetCoordinates(latitude, longitude);
             VirtualScooterData.Instance.SetSerialNumber(serialNumber);
 
-            Console.WriteLine($"{nameof(serialNumber)}: {serialNumber}");
-            Console.WriteLine($"{nameof(latitude)}: {latitude}");
-            Console.WriteLine($"{nameof(longitude)}: {longitude}");
-
             ScooterEntity? entity = _dataContext.Scooters.Select(s => s)
                 .Where(s => s.SerialNumber == serialNumber)
                 .FirstOrDefault();
@@ -39,7 +35,9 @@ namespace Vibe.VirtualScooter.Services
                 {
                     Id = Guid.NewGuid(),
                     SerialNumber = serialNumber,
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt = DateTime.UtcNow,
+                    Latitude = latitude,
+                    Longitude = longitude,
                 };
 
                 _dataContext.Add(entity);
