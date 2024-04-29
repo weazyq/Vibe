@@ -24,7 +24,7 @@ namespace Vibe.BackOffice.Server.Controllers
             if (refreshToken is null) return Result.Fail("");
 
             User? user = _userService.GetUserByRefreshToken(refreshToken);
-            if (user is null) return Result.Fail("");
+            if (user is null) return Result.Fail("Указанного пользователя не существует");
 
             if (user.TokenExpires < DateTime.Now) return Result.Fail("");
 
