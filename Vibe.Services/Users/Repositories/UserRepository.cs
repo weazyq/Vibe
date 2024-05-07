@@ -23,6 +23,11 @@ namespace Vibe.EF
             return userEntity.ToDomain();
         }
 
+        public User? GetUserByClientId(Guid clientId)
+        {
+            return _context.Users.FirstOrDefault(u => u.ClientId == clientId)?.ToDomain();
+        }
+
         public User? GetUserByRefreshToken(String refreshToken)
         {
             UserEntity? userEntity = _context.Users.FirstOrDefault(u => u.RefreshToken == refreshToken);

@@ -37,6 +37,11 @@ namespace Vibe.EF
             }
         }
 
+        public Client? GetClientByPhoneNumber(String phoneNumber)
+        {
+            return _context.Clients.Where(c => !c.IsRemoved).FirstOrDefault(c => c.Phone == phoneNumber)?.ToDomain();
+        }
+
         public Client? GetClient(Guid id)
         {
             ClientEntity? client = _context.Clients.FirstOrDefault(c => c.Id == id);

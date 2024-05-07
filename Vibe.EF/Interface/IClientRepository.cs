@@ -7,6 +7,7 @@ namespace Vibe.EF.Interface
     {
         Result<Guid> SaveClient(ClientBlank blank);
         Client? GetClient(Guid clientId);
+        Client? GetClientByPhoneNumber(String phoneNumber);
         Client GetClientByUser(Guid userId);
     }
 }

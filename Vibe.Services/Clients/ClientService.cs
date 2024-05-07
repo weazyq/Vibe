@@ -16,6 +16,14 @@ namespace Vibe.Services.Clients
             _phoneCodeRepository = phoneCodeRepository;
             _clientRepository = clientRepository;
         }
+
+        public Boolean CheckIsPhoneNumberExist(String phoneNumber)
+        {
+            Client? client = _clientRepository.GetClientByPhoneNumber(phoneNumber);
+
+            return client is not null;
+        }
+
         public Result<Guid> SaveClient(ClientBlank clientBlank)
         {
             if (clientBlank.Name == null) return Result.Fail("Укажите имя");
@@ -29,6 +37,11 @@ namespace Vibe.Services.Clients
             return _clientRepository.GetClient(clientId);
         }
 
+        public Client? GetClientByPhoneNumber(String phoneNumber) 
+        {
+            return _clientRepository.GetClientByPhoneNumber(phoneNumber);
+        }
+
         public Client GetClientByUser(Guid userId)
         {
             return _clientRepository.GetClientByUser(userId);
@@ -36,7 +49,24 @@ namespace Vibe.Services.Clients
 
         public Result SendSms(String phoneNumber)
         {
-            Random rnd = new Random();
+            String code = GenerateCode();
+            return _phoneCodeRepository.SaveSms(phoneNumber, code);
+        }
+
+        public Result CheckSms(ClientBlank clientBlank, String code)
+        {
+            if (clientBlank.Phone == null) return Result.Fail("Укажите номер телефона");
+
+            PhoneCodeEntity? phoneCode = _phoneCodeRepository.GetSms(clientBlank.Phone);
+            if (phoneCode is null) return Result.Fail("Проверьте ввод номера телефона");
+            if (!code.Equals(phoneCode.Code)) return Result.Fail("Введённый тобой код не совпадает с отправленным");
+
+            return Result.Success;
+        }
+
+        private String GenerateCode()
+        {
+            Random rnd = new();
 
             String code = "";
             Int32 codeLength = 4;
@@ -46,21 +76,7 @@ namespace Vibe.Services.Clients
                 code += number.ToString();
             }
 
-            if (String.IsNullOrEmpty(code)) return Result.Fail("Не удалось сгенерировать код для регистрации");
-
-            return _phoneCodeRepository.SaveSms(phoneNumber, code);
-        }
-
-        public Result CheckSms(ClientBlank clientBlank, String code)
-        {
-            if (clientBlank.Name == null) return Result.Fail("Укажите имя");
-            if (clientBlank.Phone == null) return Result.Fail("Укажите номер телефона");
-
-            PhoneCodeEntity? phoneCode = _phoneCodeRepository.GetSms(clientBlank.Phone);
-            if (phoneCode is null) return Result.Fail("Проверьте ввод номера телефона");
-            if (!code.Equals(phoneCode.Code)) return Result.Fail("Введённый тобой код не совпадает с отправленным");
-
-            return Result.Success;
+            return code;
         }
     }
 }

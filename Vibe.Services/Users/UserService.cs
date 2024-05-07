@@ -24,6 +24,11 @@ namespace Vibe.Services.Users
             return _userRepository.GetUser(userId);
         }
 
+        public User? GetUserByClientId(Guid clientId)
+        {
+            return _userRepository.GetUserByClientId(clientId);
+        }
+
         public User? GetUserByRefreshToken(String refreshToken)
         {
             return _userRepository.GetUserByRefreshToken(refreshToken);

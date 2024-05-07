@@ -6,6 +6,7 @@ namespace Vibe.EF.Interface
     public interface IUserRepository
     {
         User? GetUser(Guid userId);
+        User? GetUserByClientId(Guid clientId);
         User? GetUserByRefreshToken(String refreshToken);
         Result<Guid> SaveUserByClient(Guid clientId);
         Result UpdateUser(User user);

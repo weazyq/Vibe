@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Vibe.Domain.Clients;
 using Vibe.Domain.Infrastructure;
+using Vibe.Domain.Users;
 using Vibe.Services.Clients.Interface;
 using Vibe.Services.Infrastructure.Interface;
 using Vibe.Services.Users.Interface;
@@ -30,6 +31,12 @@ namespace Vibe.BackOffice.Server.Controllers
             return _clientService.GetClientByUser(User.GetUserId());
         }
 
+        [HttpGet("CheckPhoneNumber")]
+        public Boolean CheckPhoneNumber(String phoneNumber)
+        {
+            return _clientService.CheckIsPhoneNumberExist(phoneNumber);
+        }
+
         [HttpGet("SendSms")]
         public Result SendSms(String phoneNumber)
         {
@@ -53,6 +60,25 @@ namespace Vibe.BackOffice.Server.Controllers
             if (loginResult.IsFail) return new Result<LoginResultDTO?>(null, loginResult.Error);
 
             return new LoginResultDTO(saveUserResult.Data, loginResult.Data.Token, loginResult.Data.RefreshToken);
+        }
+
+        [HttpPost("Login")]
+        public Result<LoginResultDTO?> Login([FromBody] CheckSmsRequest request)
+        {
+            Result checkSmsResult = _clientService.CheckSms(request.ClientBlank, request.Code);
+            if (checkSmsResult.IsFail) return checkSmsResult;
+
+            if (String.IsNullOrWhiteSpace(request.ClientBlank.Phone)) return Result.Fail("Не указан номер телефона клиента");
+            Client? client = _clientService.GetClientByPhoneNumber(request.ClientBlank.Phone);
+            if (client is null) return Result.Fail("Клиент не существует в системе");
+
+            User? user = _userService.GetUserByClientId(client.Id);
+            if (user is null) return Result.Fail("Пользователь не существует в системе");
+
+            Result<(String Token, String RefreshToken)> loginResult = _authService.Login(user.Id);
+            if (loginResult.IsFail) return new Result<LoginResultDTO?>(null, loginResult.Error);
+
+            return new LoginResultDTO(user.Id, loginResult.Data.Token, loginResult.Data.RefreshToken);
         }
     }
 }
