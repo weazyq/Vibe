@@ -46,9 +46,9 @@ namespace Vibe.Tools.Result
 
         public static Result Success = new Result() { };
 
-        public static Result Fail(String message) 
+        public static Result Fail(String message, String? key = null) 
         {
-            Result result = new Result(new Error(message));
+            Result result = new Result(new Error(message, key));
             return result;
         }
 
