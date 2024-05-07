@@ -1,4 +1,5 @@
 ﻿using Vibe.Domain.Clients;
+using Vibe.Domain.Infrastructure;
 using Vibe.EF.Entities;
 using Vibe.EF.Interface;
 using Vibe.Services.Clients.Interface;
@@ -49,6 +50,13 @@ namespace Vibe.Services.Clients
 
         public Result SendSms(String phoneNumber)
         {
+            PhoneCode? phoneCode = _phoneCodeRepository.GetSms(phoneNumber);
+            if(phoneCode is not null)
+            {
+                Boolean isPhoneCodeExpired = DateTime.UtcNow > phoneCode?.CreatedAt.AddMinutes(phoneCode.ValidityMinutes);
+                if(!isPhoneCodeExpired) return Result.Fail("На данный номер телефона уже отправлен код", "phoneCodeAlreadyExist");
+            }
+
             String code = GenerateCode();
             return _phoneCodeRepository.SaveSms(phoneNumber, code);
         }
@@ -57,7 +65,7 @@ namespace Vibe.Services.Clients
         {
             if (clientBlank.Phone == null) return Result.Fail("Укажите номер телефона");
 
-            PhoneCodeEntity? phoneCode = _phoneCodeRepository.GetSms(clientBlank.Phone);
+            PhoneCode? phoneCode = _phoneCodeRepository.GetSms(clientBlank.Phone);
             if (phoneCode is null) return Result.Fail("Проверьте ввод номера телефона");
             if (!code.Equals(phoneCode.Code)) return Result.Fail("Введённый тобой код не совпадает с отправленным");
 
