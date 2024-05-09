@@ -19,7 +19,12 @@ namespace Vibe.Services
             {
                 PhoneCodeEntity? phoneCode = _context.PhoneCodes.FirstOrDefault(pc => pc.Phone == phone);
                 if (phoneCode != null) _context.PhoneCodes.Remove(phoneCode);
-                _context.PhoneCodes.Add(new PhoneCodeEntity { Code = code, Phone = phone, CreatedAt = DateTime.UtcNow, ValidityMinutes = 5 });
+                _context.PhoneCodes.Add(new PhoneCodeEntity { 
+                    Code = code, 
+                    Phone = phone, 
+                    CreatedAt = DateTime.UtcNow, 
+                    ValidityMinutes = 1 
+                });
             
                 _context.SaveChanges();
                 return Result.Success;
