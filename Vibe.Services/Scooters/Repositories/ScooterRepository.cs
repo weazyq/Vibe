@@ -1,9 +1,10 @@
 ﻿using Vibe.Domain.Scooter;
+using Vibe.EF;
 using Vibe.EF.Entities;
 using Vibe.EF.Interface;
 using Vibe.Services.Scooters.Converters;
 
-namespace Vibe.EF
+namespace Vibe.Services.Scooters.Repositories
 {
     public class ScooterRepository : IScooterRepository
     {

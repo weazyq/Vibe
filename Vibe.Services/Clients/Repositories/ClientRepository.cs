@@ -1,10 +1,11 @@
 ﻿using Vibe.Domain.Clients;
+using Vibe.EF;
 using Vibe.EF.Entities;
 using Vibe.EF.Interface;
 using Vibe.Services.Clients.Converters;
 using Vibe.Tools.Result;
 
-namespace Vibe.EF
+namespace Vibe.Services.Clients.Repositories
 {
     public class ClientRepository : IClientRepository
     {

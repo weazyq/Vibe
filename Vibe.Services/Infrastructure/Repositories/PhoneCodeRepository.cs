@@ -5,7 +5,7 @@ using Vibe.EF.Entities;
 using Vibe.EF.Interface;
 using Vibe.Tools.Result;
 
-namespace Vibe.Services
+namespace Vibe.Services.Infrastructure.Repositories
 {
     public class PhoneCodeRepository : IPhoneCodeRepository
     {
