@@ -17,6 +17,9 @@ using Vibe.Services.Rents.Repositories;
 using Vibe.Services.Scooters;
 using Vibe.Services.Scooters.Interface;
 using Vibe.Services.Scooters.Repositories;
+using Vibe.Services.SupportRequests;
+using Vibe.Services.SupportRequests.Interface;
+using Vibe.Services.SupportRequests.Repositories;
 using Vibe.Services.Users;
 using Vibe.Services.Users.Interface;
 using Vibe.Tools;
@@ -37,6 +40,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddSingleton<IScootersProvider, ScootersProvider>();
 builder.Services.AddHttpClient<IScootersProvider, ScootersProvider>();
+
+builder.Services.AddScoped<ISupportRequestService, SupportRequestService>();
 #endregion
 
 #region Repositories
@@ -45,6 +50,7 @@ builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IRentRepository, RentRepository>();
 builder.Services.AddScoped<IPhoneCodeRepository, PhoneCodeRepository>();
 builder.Services.AddScoped<IScooterRepository, ScooterRepository>();
+builder.Services.AddScoped<ISupportRequestRepository, SupportRequestRepository>();
 #endregion
 
 builder.Services.AddDbContext<DataContext>(options => options
