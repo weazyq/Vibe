@@ -44,7 +44,7 @@ namespace Vibe.Services.SupportRequests.Repositories
             return Result.Success;
         }
 
-        public Result SaveSupportMessage(SupportMessageBlank blank)
+        public Result<Guid> SaveSupportMessage(SupportMessageBlank blank)
         {
             SupportMessageEntity message = new()
             {
@@ -65,7 +65,7 @@ namespace Vibe.Services.SupportRequests.Repositories
                 return Result.Fail("Не удалось сохранить сообщение");
             }
 
-            return Result.Success;
+            return message.Id;
         }
 
         public SupportRequestDetail? GetSupportRequestDetail(Guid id)
@@ -75,6 +75,12 @@ namespace Vibe.Services.SupportRequests.Repositories
 
             SupportMessage[] messages = _context.SupportMessages.Where(m => m.SupportRequestId == id).ToArray().ToDomain();
             return new SupportRequestDetail(supportRequest, messages);
+        }
+
+        public SupportMessage? GetSupportMessage(Guid id)
+        {
+            SupportMessage? entity = _context.SupportMessages.FirstOrDefault(m => m.Id == id)?.ToDomain();
+            return entity;
         }
 
         public SupportRequest[] GetSupportRequests(Guid clientId)

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Vibe.Chat.Hubs;
 using Vibe.Configurator.Configuration;
 using Vibe.EF;
 using Vibe.EF.Interface;
@@ -30,6 +31,23 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    var connection = builder.Configuration.GetConnectionString("Redis");
+    options.Configuration = connection;
+});
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigins", builder =>
+    {
+        builder.WithOrigins("http://localhost:8081", "http://localhost:7221")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
 
 #region Services
 builder.Services.AddScoped<IScootersService, ScootersService>();
@@ -91,7 +109,8 @@ app.UseStaticFiles();
 
 // Configure the HTTP request pipeline.
 
-app.UseCors(configure => configure.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+app.UseCors("AllowSpecificOrigins");
+app.MapHub<ChatHub>("/supportRequest");
 
 app.UseHttpsRedirection();
 

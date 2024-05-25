@@ -36,7 +36,7 @@ namespace Vibe.Services.SupportRequests
             return _supportRequestRepository.SaveSupportRequest(blank);
         }
 
-        public Result SaveSupportMessage(SupportMessageDTO message, Guid userId)
+        public Result<Guid> SaveSupportMessage(SupportMessageDTO message, Guid userId)
         {
             Client? client = _clientService.GetClientByUser(userId);
 
@@ -54,6 +54,11 @@ namespace Vibe.Services.SupportRequests
         public SupportRequestDetail? GetSupportRequestDetail(Guid id)
         {
             return _supportRequestRepository.GetSupportRequestDetail(id);
+        }
+
+        public SupportMessage? GetSupportMessage(Guid id)
+        {
+            return _supportRequestRepository.GetSupportMessage(id);
         }
 
         public SupportRequest[] GetSupportRequests(Guid userId)

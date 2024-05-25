@@ -7,8 +7,9 @@ namespace Vibe.EF.Interface
     public interface ISupportRequestRepository
     {
         Result SaveSupportRequest(SupportRequestBlank blank);
-        Result SaveSupportMessage(SupportMessageBlank blank);
+        Result<Guid> SaveSupportMessage(SupportMessageBlank blank);
         SupportRequestDetail? GetSupportRequestDetail(Guid id);
+        SupportMessage? GetSupportMessage(Guid id);
         SupportRequest[] GetSupportRequests(Guid clientId);
     }
 }

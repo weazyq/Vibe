@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Vibe.Chat.Hubs;
 using Vibe.Domain.SupportRequests;
 using Vibe.Domain.SupportRequests.SupportMessages;
 using Vibe.Services.SupportRequests.Interface;
@@ -10,9 +12,14 @@ namespace Vibe.BackOffice.Server.Controllers
 {
     public class SupportController : Controller
     {
+        private readonly IHubContext<ChatHub, IChatClient> _hubContext;
+
         private readonly ISupportRequestService _supportRequestService;
-        public SupportController(ISupportRequestService supportRequestService)
+
+        public SupportController(IHubContext<ChatHub, IChatClient> hubContext, ISupportRequestService supportRequestService)
         {
+            _hubContext = hubContext;
+
             _supportRequestService = supportRequestService;
         }
 
@@ -27,7 +34,17 @@ namespace Vibe.BackOffice.Server.Controllers
         [HttpPost("SaveSupportMessage")]
         public Result SaveMessage([FromBody] SupportMessageDTO message)
         {
-            return _supportRequestService.SaveSupportMessage(message, User.GetUserId());
+            Result<Guid> saveMessageResult =  _supportRequestService.SaveSupportMessage(message, User.GetUserId());
+            if (saveMessageResult.IsFail) return saveMessageResult;
+
+            Guid messageId = saveMessageResult.Value;
+
+            SupportMessage? savedMessage = _supportRequestService.GetSupportMessage(messageId);
+            if (savedMessage is null) return Result.Fail("Не удалось получить сохранённое сообщение");
+
+            _hubContext.Clients.Group(message.SupportRequestId.ToString()).ReceiveMessage(savedMessage);
+
+            return saveMessageResult;
         }
 
         [Authorize(Roles = "Client")]
@@ -43,6 +60,5 @@ namespace Vibe.BackOffice.Server.Controllers
         {
             return _supportRequestService.GetSupportRequests(User.GetUserId());
         }
-
     }
 }
