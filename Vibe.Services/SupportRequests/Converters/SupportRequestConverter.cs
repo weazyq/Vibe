@@ -7,8 +7,8 @@ namespace Vibe.Services.SupportRequests.Converters
     {
         public static SupportRequest ToDomain(this SupportRequestEntity entity)
         {
-            return new SupportRequest(entity.Id, entity.Title, entity.Description, entity.ClientId, entity.EmployeeId, entity.OpenedAt,
-                entity.LastEmployeeAnswerAt, entity.LastClientAnswerAt, entity.IsClosed);
+            return new SupportRequest(entity.Id, entity.Title, entity.Description, entity.ClientId, 
+                entity.EmployeeId, entity.OpenedAt, entity.IsClosed);
         }
 
         public static SupportRequest[] ToDomain(this IEnumerable<SupportRequestEntity> entities)

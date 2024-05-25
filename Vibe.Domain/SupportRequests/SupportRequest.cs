@@ -8,12 +8,10 @@
         public Guid ClientId { get; }
         public Guid? EmployeeId { get; }
         public DateTime OpenedAt { get; set; }
-        public DateTime? LastEmployeeAnswerAt { get; }
-        public DateTime? LastClientAnswerAt { get; }
         public Boolean IsClosed { get; }
 
         public SupportRequest(Guid id, String title, String description, Guid clientId, Guid? employeeId,
-            DateTime openedAt, DateTime? lastEmployeeAnswerAt, DateTime? lastClientAnswerAt, Boolean isClosed)
+            DateTime openedAt, Boolean isClosed)
         {
             Id = id;
             Title = title;
@@ -21,8 +19,6 @@
             ClientId = clientId;
             EmployeeId = employeeId;
             OpenedAt = openedAt;
-            LastEmployeeAnswerAt = lastEmployeeAnswerAt;
-            LastClientAnswerAt = lastClientAnswerAt;
             IsClosed = isClosed;
         }
     }
