@@ -9,6 +9,9 @@ using Vibe.Services;
 using Vibe.Services.Clients;
 using Vibe.Services.Clients.Interface;
 using Vibe.Services.Clients.Repositories;
+using Vibe.Services.Employees;
+using Vibe.Services.Employees.Interface;
+using Vibe.Services.Employees.Repositories;
 using Vibe.Services.Infrastructure;
 using Vibe.Services.Infrastructure.Interface;
 using Vibe.Services.Infrastructure.Repositories;
@@ -51,9 +54,10 @@ builder.Services.AddCors(options =>
 
 #region Services
 builder.Services.AddScoped<IScootersService, ScootersService>();
-builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IRentService, RentService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddSingleton<IScootersProvider, ScootersProvider>();
@@ -65,6 +69,7 @@ builder.Services.AddScoped<ISupportRequestService, SupportRequestService>();
 #region Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IRentRepository, RentRepository>();
 builder.Services.AddScoped<IPhoneCodeRepository, PhoneCodeRepository>();
 builder.Services.AddScoped<IScooterRepository, ScooterRepository>();
