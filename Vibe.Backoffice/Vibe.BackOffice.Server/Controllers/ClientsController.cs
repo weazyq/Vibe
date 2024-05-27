@@ -45,25 +45,25 @@ namespace Vibe.BackOffice.Server.Controllers
         
         public record CheckSmsRequest(ClientBlank ClientBlank, String Code);
         [HttpPost("CheckSms")]
-        public Result<LoginResultDTO?> CheckSms([FromBody] CheckSmsRequest request)
+        public Result<ClientLoginResultDTO?> CheckSms([FromBody] CheckSmsRequest request)
         {
             Result checkSmsResult = _clientService.CheckSms(request.ClientBlank, request.Code);
             if(checkSmsResult.IsFail) return checkSmsResult;
 
             Result<Guid> saveClientResult = _clientService.SaveClient(request.ClientBlank);
-            if (saveClientResult.IsFail) return new Result<LoginResultDTO?>(null, saveClientResult.Error);
+            if (saveClientResult.IsFail) return new Result<ClientLoginResultDTO?>(null, saveClientResult.Error);
 
             Result<Guid> saveUserResult = _userService.SaveUserByClient(saveClientResult.Value);
-            if (saveUserResult.IsFail) return new Result<LoginResultDTO?>(null, saveClientResult.Error);
+            if (saveUserResult.IsFail) return new Result<ClientLoginResultDTO?>(null, saveClientResult.Error);
 
-            Result<(String Token, String RefreshToken)> loginResult = _authService.Login(saveUserResult.Value);
-            if (loginResult.IsFail) return new Result<LoginResultDTO?>(null, loginResult.Error);
+            Result<(String Token, String RefreshToken)> loginResult = _authService.LoginClient(saveUserResult.Value);
+            if (loginResult.IsFail) return new Result<ClientLoginResultDTO?>(null, loginResult.Error);
 
-            return new LoginResultDTO(saveUserResult.Data, loginResult.Data.Token, loginResult.Data.RefreshToken);
+            return new ClientLoginResultDTO(saveUserResult.Data, loginResult.Data.Token, loginResult.Data.RefreshToken);
         }
 
         [HttpPost("Login")]
-        public Result<LoginResultDTO?> Login([FromBody] CheckSmsRequest request)
+        public Result<ClientLoginResultDTO?> Login([FromBody] CheckSmsRequest request)
         {
             Result checkSmsResult = _clientService.CheckSms(request.ClientBlank, request.Code);
             if (checkSmsResult.IsFail) return checkSmsResult;
@@ -75,10 +75,10 @@ namespace Vibe.BackOffice.Server.Controllers
             User? user = _userService.GetUserByClientId(client.Id);
             if (user is null) return Result.Fail("Пользователь не существует в системе");
 
-            Result<(String Token, String RefreshToken)> loginResult = _authService.Login(user.Id);
-            if (loginResult.IsFail) return new Result<LoginResultDTO?>(null, loginResult.Error);
+            Result<(String Token, String RefreshToken)> loginResult = _authService.LoginClient(user.Id);
+            if (loginResult.IsFail) return new Result<ClientLoginResultDTO?>(null, loginResult.Error);
 
-            return new LoginResultDTO(user.Id, loginResult.Data.Token, loginResult.Data.RefreshToken);
+            return new ClientLoginResultDTO(user.Id, loginResult.Data.Token, loginResult.Data.RefreshToken);
         }
     }
 }

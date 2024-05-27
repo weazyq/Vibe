@@ -19,7 +19,7 @@ namespace Vibe.BackOffice.Server.Controllers
         }
 
         [HttpGet("Auth/RefreshToken")]
-        public Result<LoginResultDTO> RefreshToken(String? refreshToken)
+        public Result<ClientLoginResultDTO> RefreshToken(String? refreshToken)
         {
             if (refreshToken is null) return Result.Fail("");
 
@@ -28,9 +28,9 @@ namespace Vibe.BackOffice.Server.Controllers
 
             if (user.TokenExpires < DateTime.Now) return Result.Fail("");
 
-            Result<(String Token, String RefreshToken)> loginResult = _authService.Login(user.Id);
+            Result<(String Token, String RefreshToken)> loginResult = _authService.LoginClient(user.Id);
 
-            return new LoginResultDTO(user.Id, loginResult.Data.Token, loginResult.Data.RefreshToken);
+            return new ClientLoginResultDTO(user.Id, loginResult.Data.Token, loginResult.Data.RefreshToken);
         } 
     }
 }
