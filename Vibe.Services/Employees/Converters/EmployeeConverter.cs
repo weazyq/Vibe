@@ -9,5 +9,10 @@ namespace Vibe.Services.Employees.Converters
         {
             return new Employee(entity.Id, entity.Name, entity.Phone, entity.Login, entity.Email);
         }
+
+        public static Employee[] ToDomain(this EmployeeEntity[] entities)
+        {
+            return entities.Select(e => e.ToDomain()).ToArray();
+        }
     }
 }

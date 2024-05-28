@@ -10,5 +10,7 @@ public interface IEmployeeService
 
     Employee? GetEmployee(Guid id);
     Employee? GetEmployee(String login);
+    Employee[] List();
     Result<EmployeeLoginResultDTO> Login(String login, String password);
+    Result RemoveEmployee(Guid employeeId);
 }

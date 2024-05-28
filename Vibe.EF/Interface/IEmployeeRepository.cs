@@ -8,6 +8,8 @@ namespace Vibe.EF.Interface
         public Result SaveEmployee(EmployeeBlank blank);
         public Employee? GetEmployee(Guid id);
         public Employee? GetEmployee(String id);
+        Employee[] List();
         Boolean CheckIsPasswordEquals(Guid employeeId, String password);
+        Result RemoveEmployee(Guid employeeId);
     }
 }

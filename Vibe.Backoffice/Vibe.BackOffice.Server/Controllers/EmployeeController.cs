@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Vibe.Domain.Employees;
 using Vibe.Domain.Infrastructure;
 using Vibe.Services.Employees.Interface;
@@ -17,10 +18,25 @@ namespace Vibe.BackOffice.Server.Controllers
             _authService = authService;
         }
 
-        [HttpPost("SaveEmployee")]
+        [Authorize(Roles = "Employee")]
+        [HttpPost("Employees/SaveEmployee")]
         public Result SaveEmployee([FromBody] EmployeeBlank blank)
         {
             return _employeeService.SaveEmployee(blank);
+        }
+
+        [Authorize(Roles = "Employee")]
+        [HttpGet("/Employees/List")]
+        public Employee[] List()
+        {
+            return _employeeService.List();
+        }
+
+        [Authorize(Roles = "Employee")]
+        [HttpGet("/Employees/Delete")]
+        public Result RemoveEmployee(Guid employeeId)
+        {
+            return _employeeService.RemoveEmployee(employeeId);
         }
 
         public record AuthData(String Login, String Password);

@@ -52,12 +52,37 @@ namespace Vibe.Services.Employees.Repositories
             return _context.Employees.FirstOrDefault(e => e.Login == login)?.ToDomain();
         }
 
+        public Employee[] List()
+        {
+            return _context.Employees.Where(e => !e.IsRemoved).ToArray().ToDomain();
+        }
+
         public Boolean CheckIsPasswordEquals(Guid employeeId, String password)
         {
             EmployeeEntity employee = _context.Employees.First(e => e.Id == employeeId);
             if (employee.Password != password) return false;
 
             return true;
-        } 
+        }
+
+        public Result RemoveEmployee(Guid employeeId)
+        {
+            EmployeeEntity? existEmployee = _context.Employees.FirstOrDefault(e => e.Id == employeeId);
+            if (existEmployee is null) return Result.Fail("Сотрудник не найден");
+
+            existEmployee.IsRemoved = true;
+
+            try
+            {
+                _context.Employees.Update(existEmployee);
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                return Result.Fail($"Не удалось удалить сотрудника. {e}");
+            }
+
+            return Result.Success;
+        }
     }
 }

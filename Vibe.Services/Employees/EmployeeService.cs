@@ -24,6 +24,11 @@ namespace Vibe.Services.Employees
             return _employeeRepository.SaveEmployee(blank);
         }
 
+        public Employee[] List()
+        {
+            return _employeeRepository.List();
+        }
+
         public Employee? GetEmployee(Guid id)
         {
             return _employeeRepository.GetEmployee(id);
@@ -44,6 +49,11 @@ namespace Vibe.Services.Employees
 
             String token = _authService.LoginEmployee(existEmployee);
             return new EmployeeLoginResultDTO(existEmployee.Id, token);
+        }
+
+        public Result RemoveEmployee(Guid employeeId)
+        {
+            return _employeeRepository.RemoveEmployee(employeeId);
         }
     }
 }

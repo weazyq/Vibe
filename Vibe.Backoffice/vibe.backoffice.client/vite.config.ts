@@ -49,6 +49,10 @@ export default defineConfig({
             '^/Auth': {
                 target: 'https://localhost:7221/',
                 secure: false
+            },
+            '^/Employees': {
+                target: 'https://localhost:7221/',
+                secure: false
             }
         },
         port: 5173,
