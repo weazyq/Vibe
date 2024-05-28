@@ -1,9 +1,9 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material"
-import { Button, FormControl, Grid, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from "@mui/material"
+import { Button, FormControl, Grid, IconButton, InputAdornment, InputLabel, OutlinedInput, Stack, TextField, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
-import { useAuthContext } from "../domain/infrastructure/authContext"
+import { useAuthContext } from "../../domain/infrastructure/authContext"
 import { useNavigate } from "react-router-dom"
-import { AuthProvider } from "../domain/infrastructure/authProvider"
+import { AuthProvider } from "../../domain/infrastructure/authProvider"
 
 interface AuthData{
   login: string,
@@ -45,20 +45,18 @@ function Auth() {
   }
 
   return (
-    <Grid container spacing={2} sx={{display: 'flex', justifyContent: 'space-between'}}>
-      <Grid item xs={12} md={6} sx={{textAlign: 'center'}}>
-        <h1>Авторизация в Vibe</h1>
+    <Grid container spacing={2} height={'100%'} alignItems={'center'}>
+      <Grid item xs={12} md={6} textAlign={'center'}>
+        <Typography variant="h3">Авторизация в Vibe</Typography>
       </Grid>
-      <Grid item xs={12} lg={4} container spacing={2}>
-        <Grid item xs={12}>
+      <Grid item xs={12} lg={4}>
+        <Stack spacing={2}>
           <TextField 
             label="Логин" 
             fullWidth
             value={authData.login}
             onChange={(e) => handleChangeLogin(e.target.value)}
           />
-        </Grid>
-        <Grid item xs={12}>
           <FormControl fullWidth variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">Пароль</InputLabel>
             <OutlinedInput
@@ -81,15 +79,13 @@ function Auth() {
               onChange={(e) => handleChangePassword(e.target.value)}
             />
           </FormControl>         
-        </Grid>
-        <Grid item xs={12}>
           <Button 
             variant="contained" 
             fullWidth 
             onClick={handleAuthClick}>
             Авторизоваться
           </Button>
-        </Grid>
+        </Stack>
       </Grid>
     </Grid>
   )
