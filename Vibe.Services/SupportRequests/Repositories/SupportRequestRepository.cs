@@ -5,6 +5,10 @@ using Vibe.EF.Entities.SupportEntities;
 using Vibe.EF.Interface;
 using Vibe.Tools.Result;
 using Vibe.Domain.SupportRequests.SupportMessages;
+using Vibe.Domain.Employees;
+using Vibe.Services.Employees.Converters;
+using Vibe.Services.Clients.Converters;
+using Vibe.Domain.Clients;
 
 namespace Vibe.Services.SupportRequests.Repositories
 {
@@ -70,11 +74,14 @@ namespace Vibe.Services.SupportRequests.Repositories
 
         public SupportRequestDetail? GetSupportRequestDetail(Guid id)
         {
-            SupportRequest? supportRequest = _context.SupportRequests.FirstOrDefault(r => r.Id == id)?.ToDomain();
-            if (supportRequest == null) return null;
+            SupportRequestEntity? entity = _context.SupportRequests.FirstOrDefault(r => r.Id == id);
+            if (entity == null) return null;
+
+            Employee? employee = _context.Employees.FirstOrDefault(e => e.Id == entity.EmployeeId)?.ToDomain();
+            Client client = _context.Clients.First(cl => cl.Id == entity.ClientId).ToDomain();
 
             SupportMessage[] messages = _context.SupportMessages.Where(m => m.SupportRequestId == id).ToArray().ToDomain();
-            return new SupportRequestDetail(supportRequest, messages);
+            return new SupportRequestDetail(entity.Id, entity.Title, entity.Description, client, employee, entity.OpenedAt, entity.IsClosed, messages);
         }
 
         public SupportMessage? GetSupportMessage(Guid id)
@@ -86,6 +93,11 @@ namespace Vibe.Services.SupportRequests.Repositories
         public SupportRequest[] GetSupportRequests(Guid clientId)
         {
             return _context.SupportRequests.Where(sr => sr.ClientId == clientId).ToDomain();
+        }
+
+        public SupportRequest[] ListSupportRequestsForEmployee(Guid employeeId)
+        {
+            return _context.SupportRequests.Where(r => r.EmployeeId == employeeId || r.EmployeeId == null).ToArray().ToDomain();
         }
     }
 }

@@ -53,6 +53,10 @@ export default defineConfig({
             '^/Employees': {
                 target: 'https://localhost:7221/',
                 secure: false
+            },
+            '^/SupportRequests': {
+                target: 'https://localhost:7221',
+                secure: false
             }
         },
         port: 5173,

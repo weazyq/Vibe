@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using System.Security.Claims;
 using Vibe.Chat.Hubs;
 using Vibe.Domain.SupportRequests;
 using Vibe.Domain.SupportRequests.SupportMessages;
@@ -30,11 +31,13 @@ namespace Vibe.BackOffice.Server.Controllers
             return _supportRequestService.SaveSupportRequest(request, User.GetUserId());
         }
 
-        [Authorize(Roles = "Client")]
-        [HttpPost("SaveSupportMessage")]
+        [Authorize(Roles = "Client, Employee")]
+        [HttpPost("SupportRequests/SaveSupportMessage")]
         public Result SaveMessage([FromBody] SupportMessageDTO message)
         {
-            Result<Guid> saveMessageResult =  _supportRequestService.SaveSupportMessage(message, User.GetUserId());
+            String role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)!.Value;
+
+            Result<Guid> saveMessageResult =  _supportRequestService.SaveSupportMessage(message, User.GetUserId(), role);
             if (saveMessageResult.IsFail) return saveMessageResult;
 
             Guid messageId = saveMessageResult.Value;
@@ -47,18 +50,25 @@ namespace Vibe.BackOffice.Server.Controllers
             return saveMessageResult;
         }
 
-        [Authorize(Roles = "Client")]
-        [HttpGet("GetSupportRequestDetail")]
+        [Authorize(Roles = "Client, Employee")]
+        [HttpGet("SupportRequests/GetSupportRequestDetail")]
         public SupportRequestDetail? GetSupportRequestDetail(Guid id)
         {
             return _supportRequestService.GetSupportRequestDetail(id);
         }
 
         [Authorize(Roles = "Client")]
-        [HttpGet("GetSupportRequests")]
+        [HttpGet("SupportRequests/GetSupportRequests")]
         public SupportRequest[] GetSupportRequests()
         {
             return _supportRequestService.GetSupportRequests(User.GetUserId());
+        }
+
+        [Authorize(Roles = "Employee")]
+        [HttpGet("SupportRequests/List")]
+        public SupportRequest[] ListForEmployee()
+        {
+            return _supportRequestService.ListSupportRequestsForEmployee(User.GetUserId());
         }
     }
 }

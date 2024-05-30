@@ -45,7 +45,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigins", builder =>
     {
-        builder.WithOrigins("http://localhost:8081", "http://localhost:7221")
+        builder.WithOrigins("http://localhost:8081", "http://localhost:7221", "https://localhost:5173")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
@@ -115,7 +115,7 @@ app.UseStaticFiles();
 // Configure the HTTP request pipeline.
 
 app.UseCors("AllowSpecificOrigins");
-app.MapHub<ChatHub>("/supportRequest");
+app.MapHub<ChatHub>("/SupportRequestChat");
 
 app.UseHttpsRedirection();
 

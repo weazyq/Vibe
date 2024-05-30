@@ -18,7 +18,7 @@ interface NavItemProps {
 const tabs: NavItemProps[] = [
     {title: "Самокаты", icon: <ElectricScooter/>, to: '/scooters'},
     {title: "Сотрудники", icon: <Badge/>, to: '/employees'},
-    {title: "Тех.поддержка", icon: <SupportAgent/>, to: '/supportRequests'}
+    {title: "Техническая\nподдержка", icon: <SupportAgent/>, to: '/supportRequests'}
 ]
 
 function Layout(props: IProps) {
@@ -69,7 +69,7 @@ function NavItem(props: NavItemProps & {isSelected: boolean, onClick: () => void
         flexDirection: 'column',
         justifyContent: 'center',
         borderRadius: 2,
-        padding: 1,
+        paddingY: 1,
         backgroundColor: props.isSelected 
             ? 'action.hover'
             : 'tranparent'

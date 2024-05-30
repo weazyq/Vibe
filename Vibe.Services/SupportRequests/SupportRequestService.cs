@@ -1,8 +1,10 @@
 ﻿using Vibe.Domain.Clients;
+using Vibe.Domain.Employees;
 using Vibe.Domain.SupportRequests;
 using Vibe.Domain.SupportRequests.SupportMessages;
 using Vibe.EF.Interface;
 using Vibe.Services.Clients.Interface;
+using Vibe.Services.Employees.Interface;
 using Vibe.Services.SupportRequests.Interface;
 using Vibe.Tools.Result;
 
@@ -11,11 +13,13 @@ namespace Vibe.Services.SupportRequests
     public class SupportRequestService : ISupportRequestService
     {
         private readonly IClientService _clientService;
+        private readonly IEmployeeService _employeeService;
         private readonly ISupportRequestRepository _supportRequestRepository;
 
-        public SupportRequestService(IClientService clientService, ISupportRequestRepository supportRequestRepository)
+        public SupportRequestService(IClientService clientService, IEmployeeService employeeService, ISupportRequestRepository supportRequestRepository)
         {
             _clientService = clientService;
+            _employeeService = employeeService;
             _supportRequestRepository = supportRequestRepository;
         }
 
@@ -36,17 +40,20 @@ namespace Vibe.Services.SupportRequests
             return _supportRequestRepository.SaveSupportRequest(blank);
         }
 
-        public Result<Guid> SaveSupportMessage(SupportMessageDTO message, Guid userId)
+        public Result<Guid> SaveSupportMessage(SupportMessageDTO message, Guid userId, String role)
         {
-            Client? client = _clientService.GetClientByUser(userId);
-
             SupportMessageBlank blank = new()
             {
                 Id = Guid.NewGuid(),
                 Text = message.Message,
-                CreatedBy = client.Id,
                 SupportRequestId = message.SupportRequestId,
             };
+
+            if(role == "Client")
+            {
+                Client? client = _clientService.GetClientByUser(userId);
+                blank.CreatedBy = client.Id;
+            } else { blank.CreatedBy = userId; } 
 
             return _supportRequestRepository.SaveSupportMessage(blank);
         }
@@ -67,6 +74,11 @@ namespace Vibe.Services.SupportRequests
             if (client is null) return [];
 
             return _supportRequestRepository.GetSupportRequests(client.Id);
+        }
+
+        public SupportRequest[] ListSupportRequestsForEmployee(Guid employeeId)
+        {
+            return _supportRequestRepository.ListSupportRequestsForEmployee(employeeId);
         }
     }
 }

@@ -11,5 +11,6 @@ namespace Vibe.EF.Interface
         SupportRequestDetail? GetSupportRequestDetail(Guid id);
         SupportMessage? GetSupportMessage(Guid id);
         SupportRequest[] GetSupportRequests(Guid clientId);
+        SupportRequest[] ListSupportRequestsForEmployee(Guid employeeId);
     }
 }

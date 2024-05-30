@@ -1,19 +1,30 @@
-﻿using Vibe.Domain.SupportRequests.SupportMessages;
+﻿using Vibe.Domain.Clients;
+using Vibe.Domain.Employees;
+using Vibe.Domain.SupportRequests.SupportMessages;
 
 namespace Vibe.Domain.SupportRequests
 {
-    public class SupportRequestDetail : SupportRequest
+    public class SupportRequestDetail
     {
+        public Guid Id { get; }
+        public String Title { get; }
+        public String Description { get; }
+        public Client Client { get; }
+        public Employee? Employee { get; }
+        public DateTime OpenedAt { get; set; }
+        public Boolean IsClosed { get; }
         public SupportMessage[] Messages { get; }
 
-        public SupportRequestDetail(Guid id, String title, String description, Guid clientId, Guid? employeeId,
-            DateTime openedAt, Boolean isClosed, SupportMessage[] messages) : base(id, title, description, clientId, employeeId, openedAt, isClosed) 
+        public SupportRequestDetail(Guid id, String title, String description, Client client, Employee? employee,
+            DateTime openedAt, Boolean isClosed, SupportMessage[] messages)
         {
-            Messages = messages;
-        }
-
-        public SupportRequestDetail(SupportRequest request, SupportMessage[] messages) : base(request.Id, request.Title, request.Description, request.ClientId, request.EmployeeId, request.OpenedAt, request.IsClosed)
-        {
+            Id = id;
+            Title = title;
+            Description = description;
+            Client = client;
+            Employee = employee;
+            OpenedAt = openedAt;
+            IsClosed = isClosed;
             Messages = messages;
         }
     }
