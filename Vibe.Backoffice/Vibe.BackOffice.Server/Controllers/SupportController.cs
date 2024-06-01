@@ -28,7 +28,7 @@ namespace Vibe.BackOffice.Server.Controllers
         [HttpPost("SaveSupportRequest")]
         public Result SaveRequest([FromBody] SupportRequestDTO request)
         {
-            return _supportRequestService.SaveSupportRequest(request, User.GetUserId());
+            return _supportRequestService.SaveSupportRequest(request, User.GetId());
         }
 
         [Authorize(Roles = "Client, Employee")]
@@ -37,7 +37,7 @@ namespace Vibe.BackOffice.Server.Controllers
         {
             String role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)!.Value;
 
-            Result<Guid> saveMessageResult =  _supportRequestService.SaveSupportMessage(message, User.GetUserId(), role);
+            Result<Guid> saveMessageResult =  _supportRequestService.SaveSupportMessage(message, User.GetId(), role);
             if (saveMessageResult.IsFail) return saveMessageResult;
 
             Guid messageId = saveMessageResult.Value;
@@ -61,14 +61,14 @@ namespace Vibe.BackOffice.Server.Controllers
         [HttpGet("SupportRequests/GetSupportRequests")]
         public SupportRequest[] GetSupportRequests()
         {
-            return _supportRequestService.GetSupportRequests(User.GetUserId());
+            return _supportRequestService.GetSupportRequests(User.GetId());
         }
 
         [Authorize(Roles = "Employee")]
         [HttpGet("SupportRequests/List")]
         public SupportRequest[] ListForEmployee()
         {
-            return _supportRequestService.ListSupportRequestsForEmployee(User.GetUserId());
+            return _supportRequestService.ListSupportRequestsForEmployee(User.GetId());
         }
     }
 }

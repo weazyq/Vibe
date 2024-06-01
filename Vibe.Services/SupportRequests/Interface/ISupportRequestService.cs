@@ -6,11 +6,11 @@ namespace Vibe.Services.SupportRequests.Interface
 {
     public interface ISupportRequestService
     {
-        Result SaveSupportRequest(SupportRequestDTO supportRequest, Guid userId);
-        Result<Guid> SaveSupportMessage(SupportMessageDTO message, Guid userId, String role);
+        Result SaveSupportRequest(SupportRequestDTO supportRequest, Guid clientId);
+        Result<Guid> SaveSupportMessage(SupportMessageDTO message, Guid id, String role);
         SupportRequestDetail? GetSupportRequestDetail(Guid id);
         SupportMessage? GetSupportMessage(Guid id);
-        SupportRequest[] GetSupportRequests(Guid userId);
+        SupportRequest[] GetSupportRequests(Guid clientId);
         SupportRequest[] ListSupportRequestsForEmployee(Guid employeeId);
     }
 }

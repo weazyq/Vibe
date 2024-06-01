@@ -7,7 +7,7 @@ namespace Vibe.Services.Clients.Converters
     {
         public static Client ToDomain(this ClientEntity entity)
         {
-            return new Client(entity.Id, entity.Name, entity.Phone, entity.CreatedAt, entity.CreatedBy, entity.ModifiedAt, entity.UpdatedBy, entity.IsRemoved);
+            return new Client(entity.Id, entity.Name, entity.Phone, entity.CreatedAt, entity.ModifiedAt, entity.IsRemoved);
         }
     }
 }

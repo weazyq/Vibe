@@ -1,20 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Vibe.Domain.Clients;
 using Vibe.Domain.Infrastructure;
-using Vibe.Domain.Users;
+using Vibe.Services.Clients.Interface;
 using Vibe.Services.Infrastructure.Interface;
-using Vibe.Services.Users.Interface;
 using Vibe.Tools.Result;
 
 namespace Vibe.BackOffice.Server.Controllers
 {
     public class AuthController : Controller
     {
-        private readonly IUserService _userService;
+        private readonly IClientService _clientService;
         private readonly IAuthService _authService;
 
-        public AuthController(IUserService userService, IAuthService authService)
+        public AuthController(IClientService clientService, IAuthService authService)
         {
-            _userService = userService;
+            _clientService = clientService;
             _authService = authService;
         }
 
@@ -23,14 +23,14 @@ namespace Vibe.BackOffice.Server.Controllers
         {
             if (refreshToken is null) return Result.Fail("");
 
-            User? user = _userService.GetUserByRefreshToken(refreshToken);
-            if (user is null) return Result.Fail("Указанного пользователя не существует");
+            Client? client = _clientService.GetClientByRefreshToken(refreshToken);
+            if (client is null) return Result.Fail("Указанного клиента не существует");
 
-            if (user.TokenExpires < DateTime.Now) return Result.Fail("");
+            if (client.TokenExpires < DateTime.Now) return Result.Fail("");
 
-            Result<(String Token, String RefreshToken)> loginResult = _authService.LoginClient(user.Id);
+            Result<(String Token, String RefreshToken)> loginResult = _authService.LoginClient(client.Id);
 
-            return new ClientLoginResultDTO(user.Id, loginResult.Data.Token, loginResult.Data.RefreshToken);
+            return new ClientLoginResultDTO(client.Id, loginResult.Data.Token, loginResult.Data.RefreshToken);
         } 
     }
 }

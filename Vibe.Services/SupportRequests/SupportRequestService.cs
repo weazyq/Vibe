@@ -1,5 +1,4 @@
 ﻿using Vibe.Domain.Clients;
-using Vibe.Domain.Employees;
 using Vibe.Domain.SupportRequests;
 using Vibe.Domain.SupportRequests.SupportMessages;
 using Vibe.EF.Interface;
@@ -23,9 +22,9 @@ namespace Vibe.Services.SupportRequests
             _supportRequestRepository = supportRequestRepository;
         }
 
-        public Result SaveSupportRequest(SupportRequestDTO supportRequest, Guid userId)
+        public Result SaveSupportRequest(SupportRequestDTO supportRequest, Guid clientId)
         {
-            Client? client = _clientService.GetClientByUser(userId);
+            Client? client = _clientService.GetClient(clientId);
             if (client is null) return Result.Fail("Клиент не существует");
 
             SupportRequestBlank blank = new()
@@ -40,20 +39,15 @@ namespace Vibe.Services.SupportRequests
             return _supportRequestRepository.SaveSupportRequest(blank);
         }
 
-        public Result<Guid> SaveSupportMessage(SupportMessageDTO message, Guid userId, String role)
+        public Result<Guid> SaveSupportMessage(SupportMessageDTO message, Guid id, String role)
         {
             SupportMessageBlank blank = new()
             {
                 Id = Guid.NewGuid(),
                 Text = message.Message,
                 SupportRequestId = message.SupportRequestId,
+                CreatedBy = id
             };
-
-            if(role == "Client")
-            {
-                Client? client = _clientService.GetClientByUser(userId);
-                blank.CreatedBy = client.Id;
-            } else { blank.CreatedBy = userId; } 
 
             return _supportRequestRepository.SaveSupportMessage(blank);
         }
@@ -68,9 +62,9 @@ namespace Vibe.Services.SupportRequests
             return _supportRequestRepository.GetSupportMessage(id);
         }
 
-        public SupportRequest[] GetSupportRequests(Guid userId)
+        public SupportRequest[] GetSupportRequests(Guid clientId)
         {
-            Client? client = _clientService.GetClientByUser(userId);
+            Client? client = _clientService.GetClient(clientId);
             if (client is null) return [];
 
             return _supportRequestRepository.GetSupportRequests(client.Id);

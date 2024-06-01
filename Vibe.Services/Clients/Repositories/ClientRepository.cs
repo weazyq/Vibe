@@ -43,6 +43,11 @@ namespace Vibe.Services.Clients.Repositories
             return _context.Clients.Where(c => !c.IsRemoved).FirstOrDefault(c => c.Phone == phoneNumber)?.ToDomain();
         }
 
+        public Client? GetClientByRefreshToken(String refreshToken)
+        {
+            return _context.Clients.Where(c => !c.IsRemoved).FirstOrDefault(c => c.RefreshToken == refreshToken)?.ToDomain();
+        }
+
         public Client? GetClient(Guid id)
         {
             ClientEntity? client = _context.Clients.FirstOrDefault(c => c.Id == id);
@@ -51,12 +56,22 @@ namespace Vibe.Services.Clients.Repositories
             return client.ToDomain();
         }
 
-        public Client GetClientByUser(Guid userId)
+        public Result UpdateClient(Client client)
         {
-            UserEntity user = _context.Users.First(u => u.Id == userId);
-            ClientEntity clientEntity = _context.Clients.First(cl => cl.Id == user.ClientId);
+            ClientEntity? clientEntity = _context.Clients.FirstOrDefault(u => u.Id == client.Id);
+            if (clientEntity is null) return Result.Fail("Клиент не существует");
 
-            return clientEntity.ToDomain();
+            try
+            {
+                clientEntity.UpdateFromUser(client);
+                _context.Clients.Update(clientEntity);
+                _context.SaveChanges();
+                return Result.Success;
+            }
+            catch (Exception e)
+            {
+                return Result.Fail("Возникли ошибки при обновлении клиента");
+            }
         }
     }
 }

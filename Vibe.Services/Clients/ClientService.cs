@@ -1,6 +1,5 @@
 ﻿using Vibe.Domain.Clients;
 using Vibe.Domain.Infrastructure;
-using Vibe.EF.Entities;
 using Vibe.EF.Interface;
 using Vibe.Services.Clients.Interface;
 using Vibe.Tools.Result;
@@ -43,9 +42,9 @@ namespace Vibe.Services.Clients
             return _clientRepository.GetClientByPhoneNumber(phoneNumber);
         }
 
-        public Client GetClientByUser(Guid userId)
+        public Client? GetClientByRefreshToken(String refreshToken)
         {
-            return _clientRepository.GetClientByUser(userId);
+            return _clientRepository.GetClientByRefreshToken(refreshToken);
         }
 
         public Result SendSms(String phoneNumber)
@@ -85,6 +84,11 @@ namespace Vibe.Services.Clients
             }
 
             return code;
+        }
+
+        public Result UpdateClient(Client client)
+        {
+            return _clientRepository.UpdateClient(client);
         }
     }
 }

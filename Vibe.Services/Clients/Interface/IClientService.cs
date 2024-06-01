@@ -9,8 +9,9 @@ namespace Vibe.Services.Clients.Interface
         Boolean CheckIsPhoneNumberExist(String phoneNumber);
         Client? GetClient(Guid clientId);
         Client? GetClientByPhoneNumber(String phoneNumber);
-        Client GetClientByUser(Guid userId);
+        Client? GetClientByRefreshToken(String refreshToken);
         Result SendSms(String phoneNumber);
         Result CheckSms(ClientBlank blank, String code);
+        Result UpdateClient(Client client);
     }
 }

@@ -8,7 +8,7 @@ namespace Vibe.Services.Rents.Interface
         Task<Result<Rent>> Initialize(Guid scooterId, Guid clientId);
         Task<Result> EndRent(Guid rentId);
         Rent? GetRentByClient(Guid clientId);
-        Rent? GetActiveUserRent(Guid userId);
-        Rent[] GetRentHistory(Guid userId);
+        Rent? GetActiveRent(Guid clientId);
+        Rent[] GetRentHistory(Guid clientId);
     }
 }

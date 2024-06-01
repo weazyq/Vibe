@@ -6,6 +6,6 @@ namespace Vibe.Services.Infrastructure.Interface
     public interface IAuthService
     {
         String LoginEmployee(Employee employee);
-        Result<(String Token, String RefreshToken)> LoginClient(Guid userId);
+        Result<(String Token, String RefreshToken)> LoginClient(Guid clientId);
     }
 }

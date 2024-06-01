@@ -59,17 +59,17 @@ namespace Vibe.Services.Rents
             return _rentRepository.GetRentByClient(clientId);
         }
 
-        public Rent? GetActiveUserRent(Guid userId)
+        public Rent? GetActiveRent(Guid clientId)
         {
-            Client? client = _clientService.GetClientByUser(userId);
+            Client? client = _clientService.GetClient(clientId);
             if (client == null) return null;
 
             return _rentRepository.GetActiveRent(client.Id);
         }
 
-        public Rent[] GetRentHistory(Guid userId)
+        public Rent[] GetRentHistory(Guid clientId)
         {
-            Client? client = _clientService.GetClientByUser(userId);
+            Client? client = _clientService.GetClient(clientId);
             if (client == null) return [];
 
             return _rentRepository.GetRentHistory(client.Id);

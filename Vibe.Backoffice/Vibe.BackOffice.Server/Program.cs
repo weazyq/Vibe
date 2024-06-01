@@ -24,8 +24,6 @@ using Vibe.Services.Scooters.Repositories;
 using Vibe.Services.SupportRequests;
 using Vibe.Services.SupportRequests.Interface;
 using Vibe.Services.SupportRequests.Repositories;
-using Vibe.Services.Users;
-using Vibe.Services.Users.Interface;
 using Vibe.Tools;
 using Vibe.Tools.JWT;
 
@@ -52,7 +50,6 @@ builder.Services.AddCors(options =>
 #region Services
 builder.Services.AddScoped<IScootersService, ScootersService>();
 builder.Services.AddScoped<IRentService, RentService>();
-builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -64,7 +61,6 @@ builder.Services.AddScoped<ISupportRequestService, SupportRequestService>();
 #endregion
 
 #region Repositories
-builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IRentRepository, RentRepository>();

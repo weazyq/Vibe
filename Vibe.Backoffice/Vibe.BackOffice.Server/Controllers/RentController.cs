@@ -33,14 +33,14 @@ namespace Vibe.BackOffice.Server.Controllers
         [Authorize(Roles = "Client")]
         public Result<Rent?> GetUserRent()
         {
-            return _rentService.GetActiveUserRent(User.GetUserId());
+            return _rentService.GetActiveRent(User.GetId());
         }
 
         [HttpGet("GetRentHistory")]
         [Authorize(Roles = "Client")]
         public Rent[] GetRentHistory()
         {
-            return _rentService.GetRentHistory(User.GetUserId());
+            return _rentService.GetRentHistory(User.GetId());
         }
     }
 }

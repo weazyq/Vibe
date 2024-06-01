@@ -4,25 +4,25 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using Vibe.Configurator.Configuration;
-using Vibe.Domain.Users;
 using Vibe.Services.Infrastructure.Interface;
 using Vibe.Tools.JWT;
 using Vibe.Tools;
 using Vibe.Tools.Result;
 using Vibe.Tools.Token;
-using Vibe.Services.Users.Interface;
 using Vibe.Domain.Employees;
+using Vibe.Domain.Clients;
+using Vibe.Services.Clients.Interface;
 
 namespace Vibe.Services.Infrastructure;
 
 public class AuthService : IAuthService
 {
-    private readonly IUserService _userService;
+    private readonly IClientService _clientService;
     private readonly IConfiguration _configuration;
 
-    public AuthService(IUserService userService, IConfiguration configuration) 
+    public AuthService(IClientService clientService, IConfiguration configuration) 
     {
-        _userService = userService;
+        _clientService = clientService;
         _configuration = configuration;
     }
 
@@ -31,14 +31,14 @@ public class AuthService : IAuthService
         return CreateToken(employee.Id, "Employee");
     }
 
-    public Result<(String Token, String RefreshToken)> LoginClient(Guid userId)
+    public Result<(String Token, String RefreshToken)> LoginClient(Guid clientId)
     {
-        User? user = _userService.GetUser(userId);
-        if (user is null) return Result.Fail("Не удалось авторизовать пользователя. Пользователь не существует в системе");
+        Client? client = _clientService.GetClient(clientId);
+        if (client is null) return Result.Fail("Не удалось авторизовать клиента. Клиент не существует в системе");
 
-        String token = CreateToken(user.Id, "Client");
+        String token = CreateToken(client.Id, "Client");
         RefreshToken newRefreshToken = GenerateRefreshToken();
-        SetRefreshToken(user, newRefreshToken);
+        SetRefreshToken(client, newRefreshToken);
         return (token, newRefreshToken.Token);
     }
 
@@ -66,10 +66,10 @@ public class AuthService : IAuthService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    private void SetRefreshToken(User user, RefreshToken newRefreshToken)
+    private void SetRefreshToken(Client client, RefreshToken newRefreshToken)
     {
-        user.SetRefreshToken(newRefreshToken);
-        _userService.UpdateUser(user);
+        client.SetRefreshToken(newRefreshToken);
+        _clientService.UpdateClient(client);
     }
 
     private RefreshToken GenerateRefreshToken()

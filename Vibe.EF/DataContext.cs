@@ -13,8 +13,6 @@ namespace Vibe.EF
         public DbSet<PhoneCodeEntity> PhoneCodes { get; set; }
         public DbSet<RentEntity> Rents { get; set; }
         public DbSet<ScooterEntity> Scooters { get; set; }
-        public DbSet<UserEntity> Users { get; set; }
-        public DbSet<WorkzoneEntity> Workzones { get; set; }
         public DbSet<SupportRequestEntity> SupportRequests { get; set; }
         public DbSet<SupportMessageEntity> SupportMessages { get; set; }
     }
