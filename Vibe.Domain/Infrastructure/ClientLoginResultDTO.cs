@@ -1,3 +1,3 @@
 ﻿namespace Vibe.Domain.Infrastructure;
 
-public record ClientLoginResultDTO(Guid UserId, String Token, String RefreshToken);
+public record ClientLoginResultDTO(Guid ClientId, String Token, String RefreshToken);

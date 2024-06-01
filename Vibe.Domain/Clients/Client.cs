@@ -14,11 +14,15 @@ namespace Vibe.Domain.Clients
         public DateTime? ModifiedAt { get; }
         public Boolean IsRemoved { get; }
 
-        public Client(Guid id, String name, String phone, DateTime createdAt, DateTime? modifiedAt, Boolean isRemoved)
+        public Client(Guid id, String name, String phone, String? refreshToken, DateTime tokenCreated, DateTime tokenExpires, 
+            DateTime createdAt, DateTime? modifiedAt, Boolean isRemoved)
         {
             Id = id;
             Name = name;
             Phone = phone;
+            RefreshToken = refreshToken;
+            TokenCreated = tokenCreated;
+            TokenExpires = tokenExpires;
             CreatedAt = createdAt;
             ModifiedAt = modifiedAt;
             IsRemoved = isRemoved;
