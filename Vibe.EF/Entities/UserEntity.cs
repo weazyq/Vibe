@@ -1,9 +1,8 @@
 ﻿using Vibe.Domain.Users;
-using Vibe.EF.Entities.Base;
 
 namespace Vibe.EF.Entities
 {
-    public class UserEntity : Auditable, IHaveId, IRemovable
+    public class UserEntity
     {
         public Guid Id { get; set; }
         public Guid? EmployeeId { get; set; }
@@ -11,6 +10,10 @@ namespace Vibe.EF.Entities
         public String? RefreshToken { get; set; } = String.Empty;
         public DateTime TokenCreated {  get; set; }
         public DateTime TokenExpires { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? ModifiedAt { get; set; }
+        public Guid? UpdatedBy { get; set; }
         public Boolean IsRemoved { get; set; }
 
         public void UpdateFromUser(User user)

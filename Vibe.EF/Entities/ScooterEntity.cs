@@ -1,9 +1,8 @@
 ﻿using Vibe.Domain.Scooter;
-using Vibe.EF.Entities.Base;
 
 namespace Vibe.EF.Entities
 {
-    public class ScooterEntity : IHaveId
+    public class ScooterEntity
     {
         public Guid Id { get; set; }
         public String? SerialNumber { get; set; } = String.Empty;

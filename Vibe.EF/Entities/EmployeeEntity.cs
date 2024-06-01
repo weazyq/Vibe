@@ -1,15 +1,13 @@
-﻿using Vibe.EF.Entities.Base;
-
-namespace Vibe.EF.Entities
+﻿namespace Vibe.EF.Entities
 {
-    public class EmployeeEntity : Auditable, IHaveId, IRemovable
+    public class EmployeeEntity
     {
         public Guid Id { get; set; }
-        public String Name { get; set; }
-        public String Phone { get; set; }
-        public String Email { get; set; }
-        public String Login { get; set; }
-        public String Password { get; set; }
+        public required String Name { get; set; }
+        public required String Phone { get; set; }
+        public required String Email { get; set; }
+        public required String Login { get; set; }
+        public required String Password { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? ModifiedAt { get; set; }
         public Guid? CreatedBy { get; set; }

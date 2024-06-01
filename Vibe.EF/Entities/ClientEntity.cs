@@ -1,12 +1,12 @@
-﻿using Vibe.EF.Entities.Base;
-
-namespace Vibe.EF.Entities
+﻿namespace Vibe.EF.Entities
 {
-    public class ClientEntity : Auditable, IHaveId, IRemovable
+    public class ClientEntity
     {
         public Guid Id { get; set; }
-        public String Name { get; set; }
-        public String Phone { get; set; }
+        public required String Name { get; set; }
+        public required String Phone { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? ModifiedAt { get; set; }
         public Boolean IsRemoved { get; set; }
     }
 }
