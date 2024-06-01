@@ -31,15 +31,12 @@ using Vibe.Tools.JWT;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+builder.AddRedisDistributedCache("cache");
 // Add services to the container.
 
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
-builder.Services.AddStackExchangeRedisCache(options =>
-{
-    var connection = builder.Configuration.GetConnectionString("Redis");
-    options.Configuration = connection;
-});
 
 builder.Services.AddCors(options =>
 {
@@ -108,6 +105,8 @@ builder.Services.AddAuthentication(options =>
 });
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();

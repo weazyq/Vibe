@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsAspireHost>true</IsAspireHost>
+    <UserSecretsId>5ad61384-5f33-4474-b6cc-1d13c7bf7c2d</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="8.0.1" />
+    <PackageReference Include="Aspire.Hosting.Redis" Version="8.0.1" />
+    <PackageReference Include="Aspire.StackExchange.Redis" Version="8.0.1" />
+    <PackageReference Include="Aspire.StackExchange.Redis.DistributedCaching" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Vibe.BackOffice\Vibe.BackOffice.Server\Vibe.BackOffice.Server.csproj" />
+    <ProjectReference Include="..\Vibe.VirtualScooter\Vibe.VirtualScooter.csproj" />
+  </ItemGroup>
+
+</Project>

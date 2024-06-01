@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Vibe.Domain\Vibe.Domain.csproj" />
+    <ProjectReference Include="..\Vibe.ServiceDefaults\Vibe.ServiceDefaults.csproj" />
     <ProjectReference Include="..\Vibe.Tools\Vibe.Tools.csproj" />
   </ItemGroup>
 

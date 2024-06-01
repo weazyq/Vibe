@@ -4,6 +4,8 @@ using Vibe.VirtualScooter.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -21,6 +23,8 @@ builder.Services.AddSingleton<IHostedService, ScooterScheduler>();
 
 var app = builder.Build();
 
+app.MapDefaultEndpoints();
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -28,7 +32,7 @@ app.UseAuthorization();
 using (var scope = app.Services.CreateScope())
 {
     VirtualScooterService? virtualScooterService = scope.ServiceProvider.GetService<VirtualScooterService>();
-    if(virtualScooterService == null) throw new NullReferenceException($"При запуске приложения не удалось получить сервис инициализиации самоката: VirtualScooterService");
+    if(virtualScooterService == null) throw new NullReferenceException($"РџСЂРё Р·Р°РїСѓСЃРєРµ РїСЂРёР»РѕР¶РµРЅРёСЏ РЅРµ СѓРґР°Р»РѕСЃСЊ РїРѕР»СѓС‡РёС‚СЊ СЃРµСЂРІРёСЃ РёРЅРёС†РёР°Р»РёР·РёР°С†РёРё СЃР°РјРѕРєР°С‚Р°: VirtualScooterService");
 
     virtualScooterService.Initialize();
 }
