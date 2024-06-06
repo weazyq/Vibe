@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 using Vibe.Chat.Hubs;
 using Vibe.Configurator.Configuration;
 using Vibe.EF;
@@ -30,8 +32,10 @@ using Vibe.Tools.JWT;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
-builder.AddRedisDistributedCache("cache");
-// Add services to the container.
+/*builder.AddRedisDistributedCache("cache");*/
+
+var redisConnectionString = builder.Configuration.GetSection("Redis:ConnectionString").Value;
+builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnectionString));
 
 builder.Services.AddControllers();
 builder.Services.AddSignalR();

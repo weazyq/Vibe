@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vibe.Tools", "Vibe.Tools\Vi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vibe.Configurator", "Vibe.Configurator\Vibe.Configurator.csproj", "{B8B74D71-09F1-459E-B36D-7A9991992F51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vibe.AppHost", "Vibe.AppHost\Vibe.AppHost.csproj", "{CD5A8337-62F0-42B5-ADA9-799CB06F68C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vibe.AppHost", "Vibe.AppHost\Vibe.AppHost.csproj", "{CD5A8337-62F0-42B5-ADA9-799CB06F68C0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vibe.ServiceDefaults", "Vibe.ServiceDefaults\Vibe.ServiceDefaults.csproj", "{4A326AFB-BE35-4518-AF4E-58D802D191C3}"
 EndProject

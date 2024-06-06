@@ -1,5 +1,4 @@
-import { Box, Button, Input, Stack, SxProps, TextField, Theme, Typography } from "@mui/material"
-import { SupportRequest } from "../../domain/techSupports/supportRequest"
+import { Box, Button, Input, Stack, SxProps, Theme, Typography } from "@mui/material"
 import { Send } from '@mui/icons-material';
 import { AccountCircle, Comment, CommentsDisabled } from "@mui/icons-material"
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr"
@@ -14,7 +13,7 @@ interface SupportRequestChatProps {
 }
 
 function SupportRequestChat({supportRequestId}: SupportRequestChatProps) {
-    const [connection, setConnection] = useState<HubConnection | null>(null)
+    const [, setConnection] = useState<HubConnection | null>(null)
     const [supportRequest, setSupportRequest] = useState<SupportRequestDetail | null>(null)
     const [messages, setMessages] = useState<SupportMessage[]>([])
     const [message, setMessage] = useState<string>('')

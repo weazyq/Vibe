@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Distributed;
+using StackExchange.Redis;
 using System.Text.Json;
 using Vibe.Chat.Models;
 using Vibe.Domain.SupportRequests.SupportMessages;
@@ -13,41 +14,30 @@ namespace Vibe.Chat.Hubs
 
     public class ChatHub : Hub<IChatClient>
     {
-        private readonly IDistributedCache _cache;
+        private readonly IConnectionMultiplexer _redis;
 
-        public ChatHub(IDistributedCache cache)
+        public ChatHub(IConnectionMultiplexer redis)
         {
-            _cache = cache;
+            _redis = redis;
         }
 
         public async Task JoinChat(UserConnection connection)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, connection.SupportRequestId.ToString());
-
-            await _cache.SetStringAsync(Context.ConnectionId, JsonSerializer.Serialize(connection));
+            
+            var db = _redis.GetDatabase();
+            await db.StringSetAsync(Context.ConnectionId, JsonSerializer.Serialize(connection));
         }
-
-        /*public async Task SendMessage(String message)
-        {
-            var stringConnection = await _cache.GetAsync(Context.ConnectionId);
-
-            UserConnection? connection = JsonSerializer.Deserialize<UserConnection>(stringConnection);
-            if (connection is not null)
-            {
-                await Clients
-                    .Group(connection.SupportRequestId.ToString())
-                    .ReceiveMessage(message);
-            }
-        }*/
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            var stringConnection = await _cache.GetAsync(Context.ConnectionId);
+            var db = _redis.GetDatabase();
+            var stringConnection = await db.StringGetAsync(Context.ConnectionId);
             UserConnection? connection = JsonSerializer.Deserialize<UserConnection>(stringConnection);
 
             if (connection is not null)
             {
-                await _cache.RemoveAsync(Context.ConnectionId);
+                await db.KeyDeleteAsync(Context.ConnectionId);
                 await Groups.RemoveFromGroupAsync(Context.ConnectionId, connection.SupportRequestId.ToString());
             }
 

@@ -1,4 +1,4 @@
-import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react"
+import { PropsWithChildren, createContext, useContext, useState } from "react"
 
 interface IAuthContext {
     isAuthenticated: boolean,
