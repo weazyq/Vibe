@@ -1,6 +1,0 @@
-@Vibe.BackOffice.Server_HostAddress = http://localhost:5237
-
-GET {{Vibe.BackOffice.Server_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
