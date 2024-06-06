@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <SpaRoot>..\vibe.backoffice.client</SpaRoot>
+    <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
+    <SpaProxyServerUrl>https://localhost:5173</SpaProxyServerUrl>
+    <UserSecretsId>86b8cb53-4a3f-4a3b-a4cb-35cd11325c43</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Vibe.Configurator\Vibe.Configurator.csproj" />
+    <ProjectReference Include="..\..\Vibe.Domain\Vibe.Domain.csproj" />
+    <ProjectReference Include="..\..\Vibe.EF\Vibe.EF.csproj" />
+    <ProjectReference Include="..\..\Vibe.ServiceDefaults\Vibe.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\..\Vibe.Services\Vibe.Services.csproj" />
+    <ProjectReference Include="..\vibe.backoffice.client\vibe.backoffice.client.esproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.StackExchange.Redis.DistributedCaching" Version="8.0.1" />
+    <PackageReference Include="EntityFrameworkCore.NamingConventions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaProxy">
+      <Version>8.*-*</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
+  </ItemGroup>
+
+</Project>
