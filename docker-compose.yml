@@ -4,6 +4,17 @@ networks:
         driver: bridge
 
 services:
+    caddy:
+        image: "caddy:2-alpine"
+        ports:
+        - "90:80"
+        - "443:443"
+        depends_on:
+        - appПах
+        volumes:
+        - "caddy_data:/data"
+        - "caddy_config:/config"
+        - "./caddy/Caddyfile:/etc/caddy/Caddyfile"
     app:
         container_name: deploy-gide
         build:
@@ -14,7 +25,7 @@ services:
         environment:
              - ASPNETCORE_HTTPS_PORTS=8081
              - ASPNETCORE_HTTP_PORTS=8080
-             - ASPNETCORE_URLS=http://+:80
+             - ASPNETCORE_URLS=https://+:80
              - ASPNETCORE_HOSTINGSTARTUPASSEMBLIES=Microsoft.AspNetCore.SpaProxy
         networks:
             - deploy-guide-dev
@@ -44,3 +55,5 @@ services:
             - ./db/:/docker-entrypoint-initdb.d
 volumes:
     postgres-data: 
+    caddy_data:
+    caddy_config:
