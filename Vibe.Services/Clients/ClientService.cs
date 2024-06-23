@@ -71,7 +71,7 @@ namespace Vibe.Services.Clients
             return Result.Success;
         }
 
-        private String GenerateCode()
+        public String GenerateCode()
         {
             Random rnd = new();
 

@@ -2,7 +2,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
+using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using Vibe.Chat.Hubs;
 using Vibe.Configurator.Configuration;
 using Vibe.EF;
@@ -31,15 +34,48 @@ using Vibe.Tools.JWT;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Вариант с .Net Aspire
 builder.AddServiceDefaults();
-/*builder.AddRedisDistributedCache("cache");*/
+builder.AddRedisDistributedCache("cache");
 
-var redisConnectionString = builder.Configuration.GetSection("Redis:ConnectionString").Value;
-builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnectionString));
+// Вариант с Docker Compose
+/*var redisConnectionString = builder.Configuration.GetSection("Redis:ConnectionString").Value;
+builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnectionString));*/
 
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
+builder.Services.AddSwaggerGen(c =>
+{
+    // Определение безопасности
+    var securityScheme = new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Description = "Введите токен JWT",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer", // Используйте "bearer" для JWT
+        BearerFormat = "JWT"
+    };
+    c.AddSecurityDefinition("Bearer", securityScheme);
 
+    // Требование безопасности
+    var securityRequirement = new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    };
+    c.AddSecurityRequirement(securityRequirement);
+});
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigins", builder =>
@@ -110,6 +146,12 @@ app.MapDefaultEndpoints();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+    c.RoutePrefix = "swagger";
+});
 
 // Configure the HTTP request pipeline.
 
