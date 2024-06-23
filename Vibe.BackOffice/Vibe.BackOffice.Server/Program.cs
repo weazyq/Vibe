@@ -1,16 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
-using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using Vibe.Chat.Hubs;
 using Vibe.Configurator.Configuration;
 using Vibe.EF;
 using Vibe.EF.Interface;
-using Vibe.Services;
 using Vibe.Services.Clients;
 using Vibe.Services.Clients.Interface;
 using Vibe.Services.Clients.Repositories;
@@ -34,16 +30,32 @@ using Vibe.Tools.JWT;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Вариант с .Net Aspire
-builder.AddServiceDefaults();
-builder.AddRedisDistributedCache("cache");
-
-// Вариант с Docker Compose
-/*var redisConnectionString = builder.Configuration.GetSection("Redis:ConnectionString").Value;
-builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnectionString));*/
+String? launchProfile = Environment.GetEnvironmentVariable("LAUNCH_PROFILE");
+switch (launchProfile)
+{
+    case "DOTNETASPIRE":
+        builder.AddServiceDefaults();
+        builder.AddRedisDistributedCache("cache");
+        break;
+    case "HTTPS":
+        builder.Services.AddStackExchangeRedisCache(options =>
+        {
+            var connection = builder.Configuration.GetConnectionString("Redis");
+            options.Configuration = connection;
+        });
+        break;
+    case "DOCKER_COMPOSE":
+        // Вариант с Docker Compose
+        var redisConnectionString = builder.Configuration.GetSection("Redis:ConnectionString").Value;
+        builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnectionString));
+        break;
+    default:
+        throw new InvalidOperationException($"Не указан профиль запуска");
+}
 
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
+builder.Services.AddHealthChecks();
 builder.Services.AddSwaggerGen(c =>
 {
     // Определение безопасности

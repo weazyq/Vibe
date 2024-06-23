@@ -14,9 +14,11 @@ namespace Vibe.Chat.Hubs
 
     public class ChatHub : Hub<IChatClient>
     {
-        private readonly IConnectionMultiplexer _redis;
+        //DockerCompose
+        /*private readonly IConnectionMultiplexer _redis;*/
+        private readonly IDistributedCache _redis;
 
-        public ChatHub(IConnectionMultiplexer redis)
+        public ChatHub(IDistributedCache redis)
         {
             _redis = redis;
         }
@@ -24,22 +26,33 @@ namespace Vibe.Chat.Hubs
         public async Task JoinChat(UserConnection connection)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, connection.SupportRequestId.ToString());
-            
-            var db = _redis.GetDatabase();
-            await db.StringSetAsync(Context.ConnectionId, JsonSerializer.Serialize(connection));
+
+            //Docker
+            /*var db = _redis.GetDatabase();
+            await db.StringSetAsync(Context.ConnectionId, JsonSerializer.Serialize(connection));*/
+
+            _redis.SetString(Context.ConnectionId, JsonSerializer.Serialize(connection));
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            var db = _redis.GetDatabase();
-            var stringConnection = await db.StringGetAsync(Context.ConnectionId);
-            UserConnection? connection = JsonSerializer.Deserialize<UserConnection>(stringConnection);
+            var stringConnection = _redis.GetString(Context.ConnectionId);
+
+            //Docker
+            /*var db = _redis.GetDatabase();
+            var stringConnection = await db.StringGetAsync(Context.ConnectionId);*/
+            UserConnection? connection = JsonSerializer.Deserialize<UserConnection?>(stringConnection);
 
             if (connection is not null)
             {
+                /* DOCKER
                 await db.KeyDeleteAsync(Context.ConnectionId);
                 await Groups.RemoveFromGroupAsync(Context.ConnectionId, connection.SupportRequestId.ToString());
+                 */
+                _redis.Remove(Context.ConnectionId);
+                await Groups.RemoveFromGroupAsync(Context.ConnectionId, connection.SupportRequestId.ToString());
             }
+
 
             await base.OnDisconnectedAsync(exception);
         }
