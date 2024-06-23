@@ -38,6 +38,7 @@ switch (launchProfile)
         builder.AddRedisDistributedCache("cache");
         break;
     case "HTTPS":
+    case "HTTP":
         builder.Services.AddStackExchangeRedisCache(options =>
         {
             var connection = builder.Configuration.GetConnectionString("Redis");

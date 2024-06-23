@@ -1,6 +1,6 @@
 import { fileURLToPath, URL } from 'node:url';
 
-import { defineConfig } from 'vite';
+import { defineConfig, ServerOptions } from 'vite';
 import plugin from '@vitejs/plugin-react';
 import fs from 'fs';
 import path from 'path';
@@ -36,6 +36,33 @@ if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
     }
 }
 
+const useHttps = process.argv.includes('--https');
+
+const serverConfig: ServerOptions = {
+    proxy: {
+        '^/Auth': {
+            target: 'http://localhost:7221/',
+            secure: false
+        },
+        '^/Employees': {
+            target: 'http://localhost:7221/',
+            secure: false
+        },
+        '^/SupportRequests': {
+            target: 'http://localhost:7221',
+            secure: false
+        }
+    },
+    port: 5173
+}
+
+if(useHttps) {
+    serverConfig.https = {
+        key: fs.readFileSync(keyFilePath),
+        cert: fs.readFileSync(certFilePath),
+    }
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [plugin()],
@@ -44,25 +71,26 @@ export default defineConfig({
             '@': fileURLToPath(new URL('./src', import.meta.url))
         }
     },
-    server: {
-        proxy: {
-            '^/Auth': {
-                target: 'https://localhost:7221/',
-                secure: false
-            },
-            '^/Employees': {
-                target: 'https://localhost:7221/',
-                secure: false
-            },
-            '^/SupportRequests': {
-                target: 'https://localhost:7221',
-                secure: false
-            }
-        },
-        port: 5173,
-        https: {
-            key: fs.readFileSync(keyFilePath),
-            cert: fs.readFileSync(certFilePath),
-        }
-    }
+    server: serverConfig
+    // server: {
+    //     proxy: {
+    //         '^/Auth': {
+    //             target: 'https://localhost:7221/',
+    //             secure: false
+    //         },
+    //         '^/Employees': {
+    //             target: 'https://localhost:7221/',
+    //             secure: false
+    //         },
+    //         '^/SupportRequests': {
+    //             target: 'https://localhost:7221',
+    //             secure: false
+    //         }
+    //     },
+    //     port: 5173,
+    //     https: {
+    //         key: fs.readFileSync(keyFilePath),
+    //         cert: fs.readFileSync(certFilePath),
+    //     }
+    // }
 })
