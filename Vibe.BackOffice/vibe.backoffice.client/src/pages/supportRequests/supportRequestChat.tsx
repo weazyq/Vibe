@@ -46,7 +46,7 @@ function SupportRequestChat({supportRequestId}: SupportRequestChatProps) {
         if(supportRequest == null) return
 
         const connection = new HubConnectionBuilder()
-            .withUrl(`https://localhost:7221/SupportRequestChat`)
+            .withUrl(`http://localhost:7221/SupportRequestChat`)
             .withAutomaticReconnect()
             .build();
 
